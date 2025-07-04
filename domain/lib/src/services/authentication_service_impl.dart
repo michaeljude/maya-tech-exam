@@ -17,9 +17,6 @@ class AuthenticationServiceImpl implements AuthenticationService {
   final LocalStorageService _localStorageService;
 
   @override
-  void connect() => _authenticationRepository.connect();
-
-  @override
   Stream<Result<AuthenticationEntity?>> get authState =>
       _authenticationRepository.authState;
 
@@ -34,38 +31,7 @@ class AuthenticationServiceImpl implements AuthenticationService {
   }
 
   @override
-  Future<Result<void>> signUp({
-    required final String email,
-    required final String password,
-  }) async {
-    await _authenticationRepository.signUp(email: email, password: password);
-
-    return _localStorageService.save('isAuthenticated', value: 'authenticated');
-  }
-
-  @override
   Future<void> signOut() async {
     await _authenticationRepository.signOut();
   }
-
-  @override
-  Future<bool> hasAccessToken() async =>
-      _authenticationRepository.hasAccessToken();
-
-  @override
-  Future<String?> accessToken() async =>
-      _authenticationRepository.accessToken();
-
-  @override
-  Future<void> removePersistedSession() async =>
-      _authenticationRepository.removePersistedSession();
-
-  @override
-  Future<void> dispose() async {
-    await _authenticationRepository.dispose();
-  }
-
-  @override
-  Future<void> persistSession(final String persistSessionString) async =>
-      _authenticationRepository.persistSession(persistSessionString);
 }

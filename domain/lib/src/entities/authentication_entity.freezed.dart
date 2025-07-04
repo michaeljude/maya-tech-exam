@@ -1,6 +1,5 @@
-// dart format width=80
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -42,6 +41,148 @@ $AuthenticationEntityCopyWith(AuthenticationEntity _, $Res Function(Authenticati
 }
 
 
+/// Adds pattern-matching-related methods to [AuthenticationEntity].
+extension AuthenticationEntityPatterns on AuthenticationEntity {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( LoadingAuthenticationEntity value)?  loading,TResult Function( SignedInAuthenticationEntity value)?  signedIn,TResult Function( SignedOutAuthenticationEntity value)?  signedOut,required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case LoadingAuthenticationEntity() when loading != null:
+return loading(_that);case SignedInAuthenticationEntity() when signedIn != null:
+return signedIn(_that);case SignedOutAuthenticationEntity() when signedOut != null:
+return signedOut(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( LoadingAuthenticationEntity value)  loading,required TResult Function( SignedInAuthenticationEntity value)  signedIn,required TResult Function( SignedOutAuthenticationEntity value)  signedOut,}){
+final _that = this;
+switch (_that) {
+case LoadingAuthenticationEntity():
+return loading(_that);case SignedInAuthenticationEntity():
+return signedIn(_that);case SignedOutAuthenticationEntity():
+return signedOut(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( LoadingAuthenticationEntity value)?  loading,TResult? Function( SignedInAuthenticationEntity value)?  signedIn,TResult? Function( SignedOutAuthenticationEntity value)?  signedOut,}){
+final _that = this;
+switch (_that) {
+case LoadingAuthenticationEntity() when loading != null:
+return loading(_that);case SignedInAuthenticationEntity() when signedIn != null:
+return signedIn(_that);case SignedOutAuthenticationEntity() when signedOut != null:
+return signedOut(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  loading,TResult Function( String email,  String password)?  signedIn,TResult Function( String? errorMessage)?  signedOut,required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case LoadingAuthenticationEntity() when loading != null:
+return loading();case SignedInAuthenticationEntity() when signedIn != null:
+return signedIn(_that.email,_that.password);case SignedOutAuthenticationEntity() when signedOut != null:
+return signedOut(_that.errorMessage);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  loading,required TResult Function( String email,  String password)  signedIn,required TResult Function( String? errorMessage)  signedOut,}) {final _that = this;
+switch (_that) {
+case LoadingAuthenticationEntity():
+return loading();case SignedInAuthenticationEntity():
+return signedIn(_that.email,_that.password);case SignedOutAuthenticationEntity():
+return signedOut(_that.errorMessage);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  loading,TResult? Function( String email,  String password)?  signedIn,TResult? Function( String? errorMessage)?  signedOut,}) {final _that = this;
+switch (_that) {
+case LoadingAuthenticationEntity() when loading != null:
+return loading();case SignedInAuthenticationEntity() when signedIn != null:
+return signedIn(_that.email,_that.password);case SignedOutAuthenticationEntity() when signedOut != null:
+return signedOut(_that.errorMessage);case _:
+  return null;
+
+}
+}
+
+}
+
 /// @nodoc
 
 
@@ -78,24 +219,11 @@ String toString() {
 
 
 class SignedInAuthenticationEntity implements AuthenticationEntity {
-   SignedInAuthenticationEntity({required final  List<String> permissions, required final  List<String> roles, required this.session}): _permissions = permissions,_roles = roles;
+   SignedInAuthenticationEntity({required this.email, required this.password});
   
 
- final  List<String> _permissions;
- List<String> get permissions {
-  if (_permissions is EqualUnmodifiableListView) return _permissions;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_permissions);
-}
-
- final  List<String> _roles;
- List<String> get roles {
-  if (_roles is EqualUnmodifiableListView) return _roles;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_roles);
-}
-
- final  SessionEntity session;
+ final  String email;
+ final  String password;
 
 /// Create a copy of AuthenticationEntity
 /// with the given fields replaced by the non-null parameter values.
@@ -107,16 +235,16 @@ $SignedInAuthenticationEntityCopyWith<SignedInAuthenticationEntity> get copyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SignedInAuthenticationEntity&&const DeepCollectionEquality().equals(other._permissions, _permissions)&&const DeepCollectionEquality().equals(other._roles, _roles)&&(identical(other.session, session) || other.session == session));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SignedInAuthenticationEntity&&(identical(other.email, email) || other.email == email)&&(identical(other.password, password) || other.password == password));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_permissions),const DeepCollectionEquality().hash(_roles),session);
+int get hashCode => Object.hash(runtimeType,email,password);
 
 @override
 String toString() {
-  return 'AuthenticationEntity.signedIn(permissions: $permissions, roles: $roles, session: $session)';
+  return 'AuthenticationEntity.signedIn(email: $email, password: $password)';
 }
 
 
@@ -127,11 +255,11 @@ abstract mixin class $SignedInAuthenticationEntityCopyWith<$Res> implements $Aut
   factory $SignedInAuthenticationEntityCopyWith(SignedInAuthenticationEntity value, $Res Function(SignedInAuthenticationEntity) _then) = _$SignedInAuthenticationEntityCopyWithImpl;
 @useResult
 $Res call({
- List<String> permissions, List<String> roles, SessionEntity session
+ String email, String password
 });
 
 
-$SessionEntityCopyWith<$Res> get session;
+
 
 }
 /// @nodoc
@@ -144,25 +272,15 @@ class _$SignedInAuthenticationEntityCopyWithImpl<$Res>
 
 /// Create a copy of AuthenticationEntity
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? permissions = null,Object? roles = null,Object? session = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? email = null,Object? password = null,}) {
   return _then(SignedInAuthenticationEntity(
-permissions: null == permissions ? _self._permissions : permissions // ignore: cast_nullable_to_non_nullable
-as List<String>,roles: null == roles ? _self._roles : roles // ignore: cast_nullable_to_non_nullable
-as List<String>,session: null == session ? _self.session : session // ignore: cast_nullable_to_non_nullable
-as SessionEntity,
+email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+as String,password: null == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 
-/// Create a copy of AuthenticationEntity
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$SessionEntityCopyWith<$Res> get session {
-  
-  return $SessionEntityCopyWith<$Res>(_self.session, (value) {
-    return _then(_self.copyWith(session: value));
-  });
-}
+
 }
 
 /// @nodoc

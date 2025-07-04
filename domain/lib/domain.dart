@@ -1,5 +1,4 @@
 export 'src/entities/authentication_entity.dart';
-export 'src/entities/session_entity.dart';
 export 'src/repositories/authentication_repository.dart';
 export 'src/repositories/local_storage_repository.dart';
 export 'src/result/result.dart';
