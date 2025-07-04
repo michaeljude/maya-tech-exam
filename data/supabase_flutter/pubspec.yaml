@@ -1,0 +1,23 @@
+name: data_supabase_flutter
+description: "A new Flutter package project."
+
+publish_to: none
+
+resolution: workspace
+
+environment:
+  sdk: '>=3.8.1 <4.0.0'
+  flutter: '3.32.1'
+
+dependencies:
+  domain:
+    path: ../../domain
+  flutter:
+    sdk: flutter
+  rxdart: ^0.28.0
+  supabase_flutter: ^2.9.1
+
+dev_dependencies:
+  flutter_lints: ^5.0.0
+  flutter_test:
+    sdk: flutter
