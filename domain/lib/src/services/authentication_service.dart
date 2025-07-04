@@ -1,13 +1,10 @@
-import '../entities/authentication_entity.dart';
-import '../result/result.dart';
+import '../../domain.dart';
 
 abstract class AuthenticationService {
-  Future<Result<void>> signIn({
+  Future<Result<AuthenticationEntity>> signIn({
     required final String email,
     required final String password,
   });
 
-  Future<void> signOut();
-
-  Stream<Result<AuthenticationEntity?>> get authState;
+  Future<Result<AuthenticationEntity>> signOut();
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:monorepo/l10n/app_localizations.dart';
-import 'package:monorepo/router/app_router.dart';
+import '../l10n/app_localizations.dart';
+import '../router/app_router.dart';
 
 class App extends StatelessWidget {
   const App({required this.router, super.key});

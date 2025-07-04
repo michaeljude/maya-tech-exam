@@ -1,38 +1,53 @@
 import 'dart:async';
 
 import 'package:domain/domain.dart';
-import 'package:rxdart/subjects.dart';
+
+import 'maya_api_services.dart';
 
 class MayaServices implements AuthenticationRepository {
-  final BehaviorSubject<Result<AuthenticationEntity?>?> _authStateController =
-      BehaviorSubject.seeded(null);
+  MayaServices({required final MayaApiServices mayaApiServices})
+    : _mayaApiServices = mayaApiServices;
+
+  final MayaApiServices _mayaApiServices;
 
   @override
-  Stream<Result<AuthenticationEntity?>> get authState =>
-      _authStateController.stream.map(
-        (event) =>
-            event ??
-            UnknownFailure(
-              message: 'Unknown failure',
-              onRetry: () => signIn(email: '', password: ''),
-              stackTrace: StackTrace.current,
-            ),
+  Future<Result<AuthenticationEntity>> signIn({
+    required final String email,
+    required final String password,
+  }) async {
+    try {
+      await _mayaApiServices.signIn(email: email, password: password);
+
+      final authenticationEntity = AuthenticationEntity.signedIn(
+        email: email,
+        password: password,
       );
 
-  @override
-  Future<void> signIn({required String email, required String password}) {
-    // TODO: implement signIn
-    throw UnimplementedError();
+      return Success(
+        authenticationEntity,
+        onRetry: () => signIn(email: email, password: password),
+      );
+    } catch (error, stackTrace) {
+      return UnknownFailure(
+        message: error.toString(),
+        onRetry: () => signIn(email: email, password: password),
+        stackTrace: stackTrace,
+      );
+    }
   }
 
   @override
-  Future<void> signOut() {
-    // TODO: implement signOut
-    throw UnimplementedError();
-  }
+  Future<Result<AuthenticationEntity>> signOut() async {
+    try {
+      await _mayaApiServices.logout();
 
-  @override
-  void dispose() {
-    _authStateController.close();
+      return Success(AuthenticationEntity.signedOut(), onRetry: signOut);
+    } catch (error, stackTrace) {
+      return UnknownFailure(
+        message: error.toString(),
+        onRetry: signOut,
+        stackTrace: stackTrace,
+      );
+    }
   }
 }

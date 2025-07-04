@@ -2,14 +2,10 @@ import '../entities/authentication_entity.dart';
 import '../result/result.dart';
 
 abstract class AuthenticationRepository {
-  Future<void> signIn({
+  Future<Result<AuthenticationEntity>> signIn({
     required final String email,
     required final String password,
   });
 
-  Future<void> signOut();
-
-  Stream<Result<AuthenticationEntity?>> get authState;
-
-  void dispose();
+  Future<Result<AuthenticationEntity>> signOut();
 }

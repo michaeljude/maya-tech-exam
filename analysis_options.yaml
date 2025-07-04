@@ -1,28 +1,1007 @@
-# This file configures the analyzer, which statically analyzes Dart code to
-# check for errors, warnings, and lints.
-#
-# The issues identified by the analyzer are surfaced in the UI of Dart-enabled
-# IDEs (https://dart.dev/tools#ides-and-editors). The analyzer can also be
-# invoked from the command line by running `flutter analyze`.
-
-# The following line activates a set of recommended lints for Flutter apps,
-# packages, and plugins designed to encourage good coding practices.
-include: package:flutter_lints/flutter.yaml
+include: all_lint_rules.yaml
+analyzer:
+  language:
+    strict-casts: true
+    strict-inference: true
+    strict-raw-types: true
+  exclude:
+    - '**/*.g.dart'
+    - '**/*.freezed.dart'
+    - '**/*.mocks.dart'
+    - '**/*.gen.dart'
+    - 'services/**'
+    - 'stack/**'
+  errors:
+    todo: ignore
+    # Otherwise cause the import of all_lint_rules to warn because of some rules conflicts.
+    # We explicitly enabled even conflicting rules and are fixing the conflict
+    # in this file
+    included_file_warning: ignore
+    invalid_annotation_target: ignore
 
 linter:
-  # The lint rules applied to this project can be customized in the
-  # section below to disable rules from the `package:flutter_lints/flutter.yaml`
-  # included above or to enable additional rules. A list of all available lints
-  # and their documentation is published at https://dart.dev/lints.
-  #
-  # Instead of disabling a lint rule for the entire project in the
-  # section below, it can also be suppressed for a single line of code
-  # or a specific dart file by using the `// ignore: name_of_lint` and
-  # `// ignore_for_file: name_of_lint` syntax on the line or in the file
-  # producing the lint.
   rules:
-    # avoid_print: false  # Uncomment to disable the `avoid_print` rule
-    # prefer_single_quotes: true  # Uncomment to enable the `prefer_single_quotes` rule
+    # Too verbose with little value, and this is taken care of by the Flutter devtool anyway.
+    diagnostic_describe_all_properties: false
 
-# Additional information about this file can be found at
-# https://dart.dev/guides/language/analysis-options
+    # Conflicts with `prefer_single_quotes`
+    # Single quotes are easier to type and don't compromise on readability.
+    prefer_double_quotes: false
+
+    # Conflicts with `omit_local_variable_types` and other rules.
+    # As per Dart guidelines, we want to avoid unnecessary types to make the code
+    # more readable.
+    # See https://dart.dev/guides/language/effective-dart/design#avoid-type-annotating-initialized-local-variables
+    always_specify_types: false
+
+    # Incompatible with `prefer_final_locals`
+    # Having immutable local variables makes larger functions more predictable
+    # so we will use `prefer_final_locals` instead.
+    unnecessary_final: false
+
+    # This project doesn't use Flutter-style todos
+    flutter_style_todos: false
+
+    # Conflicts with disabling `implicit-dynamic`
+    avoid_annotating_with_dynamic: false
+
+    # Conflicts with `prefer_relative_imports`
+    always_use_package_imports: false
+
+    # Key can be defined when needed
+    use_key_in_widget_constructors: false
+
+    # Conflicts with 'prefer_final_parameters'
+    avoid_final_parameters: false
+
+    # Conflicts with localizations for flutter_gen package
+    depend_on_referenced_packages: false
+
+    # Conflicts with defining abstract classes for clean architecture
+    one_member_abstracts: false
+
+    # This project uses environment variables
+    do_not_use_environment: false
+
+    # Using late is discouraged
+    use_late_for_private_fields_and_variables: false
+
+    # This project defines classes with only static members
+    avoid_classes_with_only_static_members: false
+
+    # Catching errors for framework code is reasonable
+    avoid_catches_without_on_clauses: false
+
+    # All lints shouldn't be ignored
+    document_ignores: false
+
+    # TODO: enable below
+    public_member_api_docs: false
+    specify_nonobvious_local_variable_types: false
+    use_null_aware_elements: false
+    unnecessary_async: false
+    unsafe_variance: false
+
+dart_code_metrics:
+  exclude:
+    unused-code:
+      - '**/data/json_serializable/**'
+      - '**/old/features/home/data/models/**'
+  extends:
+    - all_dart_code_metrics_rules.yaml
+  rules:
+    - avoid-long-files: false
+    - avoid-ignoring-return-values: false
+    - no-magic-number: false
+    - avoid-long-parameter-list: false
+    - avoid-long-functions: false
+    - no-equal-arguments: false
+    - prefer-typedefs-for-callbacks: false
+    - avoid-similar-names: false
+    - prefer-number-format: false
+    - prefer-using-list-view: false
+    - prefer-type-over-var: false
+    - prefer-correct-type-name: false
+    - avoid-passing-async-when-sync-expected: false
+    - avoid-redundant-async: false
+    - avoid-accessing-collections-by-constant-index: false
+    - prefer-extracting-callbacks:
+        exclude:
+          - '**/old/**'
+        ignored-named-arguments:
+          - builder
+          - itemBuilder
+    - prefer-static-class:
+        exclude:
+          - '**/test/**'
+          - 'frontend/data/**'
+        ignore-annotations:
+          - allowedAnnotation
+        ignore-private: true
+        ignore-names:
+          - show(.*)Dialog
+          - (.*)Provider
+          - use(.*)
+          - build(.*)
+    - prefer-correct-callback-field-name:
+        name-pattern: ^(on[A-Z]|builder|validator)
+        exclude:
+          - '**/old/**'
+          - '**/data/**'
+    - prefer-correct-switch-length: false
+    - prefer-correct-handler-name:
+        name-pattern: ^(on|show|builder|transitionBuilder)
+        ignore-functions: false
+        ignore-public: true
+        exclude:
+          - '**/old/**'
+    - prefer-immutable-bloc-state: false
+    - prefer-addition-subtraction-assignments: false
+    - avoid-missing-image-alt: false
+    - avoid-nested-switch-expressions: false
+    - avoid-recursive-calls: false
+    - avoid-nested-switches: false
+    - avoid-non-empty-constructor-bodies: false
+    - function-always-returns-null: false
+    - avoid-high-cyclomatic-complexity: false
+    - prefer-sealed-bloc-state: false
+    - prefer-sealed-bloc-events: false
+    - avoid-adjacent-strings: false
+    - avoid-barrel-files: false
+    - prefer-class-destructuring: false
+    - prefer-static-method: false
+    - prefer-digit-separators: false
+    - prefer-trailing-comma: false
+    - prefer-single-widget-per-file:
+        ignore-private-widgets: true
+        exclude:
+          - '**/old/**'
+    - avoid-nested-conditional-expressions:
+        acceptable-level: 3
+    - prefer-match-file-name:
+        exclude:
+          - '**/test/**'
+          - '**/data/**'
+          - '**/old/**'
+          - 'scripts/**'
+    - no-empty-block:
+        exclude:
+          - '**/test/**'
+          - '**/old/**'
+    - avoid-late-keyword:
+        exclude:
+          - '**/test/**'
+          - '**/old/**'
+    - avoid-existing-instances-in-bloc-provider:
+        exclude:
+          - '**/test/**'
+          - '**/old/**'
+          - frontend/lib/features/browse/browse_view.dart
+    - avoid-duplicate-collection-elements: false
+    - avoid-returning-cascades: false
+    - avoid-missing-interpolation: false
+    - prefer-unwrapping-future-or:
+        exclude:
+          - '**/flutter_test_config.dart'
+          - '**/old/**'
+    - prefer-extracting-function-callbacks: false
+    - avoid-cubits: false
+    - avoid-bloc-public-methods:
+        exclude:
+          - '**/old/**'
+    - avoid-passing-bloc-to-bloc:
+        exclude:
+          - '**/old/**'
+    - prefer-correct-bloc-provider:
+        exclude:
+          - '**/old/**'
+    - avoid-substring:
+        exclude:
+          - '**/old/**'
+    - arguments-ordering:
+        last:
+          - child
+          - children
+        exclude:
+          - '**/old/**'
+    - avoid-cascade-after-if-null:
+        exclude:
+          - '**/old/**'
+    - avoid-collection-methods-with-unrelated-types:
+        exclude:
+          - '**/old/**'
+    - avoid-duplicate-exports:
+        exclude:
+          - '**/old/**'
+    - avoid-dynamic:
+        exclude:
+          - '**/old/**'
+          - '**/data/**'
+    - avoid-global-state:
+        exclude:
+          - '**/old/**'
+    - avoid-missing-enum-constant-in-map:
+        exclude:
+          - '**/old/**'
+    - avoid-non-ascii-symbols:
+        exclude:
+          - '**/old/**'
+    - avoid-non-null-assertion:
+        exclude:
+          - '**/old/**'
+    - avoid-throw-in-catch-block:
+        exclude:
+          - '**/old/**'
+    - avoid-top-level-members-in-tests:
+        exclude:
+          - '**/old/**'
+          - 'frontend/design_system/test/test_goldens.dart'
+    - avoid-unnecessary-type-assertions:
+        exclude:
+          - '**/old/**'
+    - avoid-unnecessary-type-casts:
+        exclude:
+          - '**/old/**'
+    - avoid-unrelated-type-assertions:
+        exclude:
+          - '**/old/**'
+    - avoid-unused-parameters:
+        exclude:
+          - '**/old/**'
+    - binary-expression-operand-order:
+        exclude:
+          - '**/old/**'
+    - double-literal-format:
+        exclude:
+          - '**/old/**'
+    - format-comment:
+        exclude:
+          - '**/old/**'
+          - 'scripts/**'
+    - newline-before-return:
+        exclude:
+          - '**/old/**'
+    - no-boolean-literal-compare:
+        exclude:
+          - '**/old/**'
+    - no-equal-then-else:
+        exclude:
+          - '**/old/**'
+    - no-object-declaration:
+        exclude:
+          - '**/old/**'
+    - prefer-async-await:
+        exclude:
+          - '**/old/**'
+    - prefer-commenting-analyzer-ignores:
+        exclude:
+          - '**/old/**'
+    - prefer-conditional-expressions:
+        exclude:
+          - '**/old/**'
+    - prefer-correct-identifier-length:
+        exceptions: ['i', 'id']
+        exclude:
+          - '**/old/**'
+    - prefer-correct-test-file-name:
+        exclude:
+          - '**/old/**'
+    - prefer-enums-by-name:
+        exclude:
+          - '**/old/**'
+    - prefer-first:
+        exclude:
+          - '**/old/**'
+    - prefer-immediate-return:
+        exclude:
+          - '**/old/**'
+    - prefer-iterable-of:
+        exclude:
+          - '**/old/**'
+    - prefer-last:
+        exclude:
+          - '**/old/**'
+    - prefer-moving-to-variable:
+        exclude:
+          - '**/old/**'
+          - 'scripts/**'
+    - avoid-duplicate-named-imports:
+        exclude:
+          - '**/old/**'
+    - avoid-shadowing:
+        ignored-names:
+          - context
+          - child
+        exclude:
+          - '**/old/**'
+    - prefer-return-await:
+        exclude:
+          - '**/old/**'
+    - avoid-explicit-type-declaration: false
+    - avoid-self-assignment:
+        exclude:
+          - '**/old/**'
+    - avoid-unnecessary-nullable-return-type:
+        exclude:
+          - '**/old/**'
+    - avoid-unrelated-type-casts:
+        exclude:
+          - '**/old/**'
+    - no-equal-switch-case:
+        exclude:
+          - '**/old/**'
+    - prefer-declaring-const-constructor:
+        exclude:
+          - '**/old/**'
+    - prefer-explicit-parameter-names:
+        exclude:
+          - '**/old/**'
+    - prefer-early-return:
+        exclude:
+          - '**/old/**'
+    - avoid-unnecessary-negations:
+        exclude:
+          - '**/old/**'
+    - avoid-unused-generics:
+        exclude:
+          - '**/old/**'
+    - avoid-inverted-boolean-checks:
+        exclude:
+          - '**/old/**'
+    - avoid-throw-objects-without-tostring:
+        exclude:
+          - '**/old/**'
+    - avoid-unsafe-collection-methods:
+        exclude:
+          - '**/old/**'
+          - '**/test/**'
+          - 'scripts/**'
+    - move-records-to-typedefs:
+        exclude:
+          - '**/old/**'
+    - avoid-positional-record-field-access:
+        exclude:
+          - '**/old/**'
+    - avoid-mixing-named-and-positional-fields:
+        exclude:
+          - '**/old/**'
+    - match-positional-field-names-on-assignment:
+        exclude:
+          - '**/old/**'
+    - avoid-redundant-positional-field-name:
+        exclude:
+          - '**/old/**'
+    - avoid-bottom-type-in-patterns:
+        exclude:
+          - '**/old/**'
+    - avoid-explicit-pattern-field-name:
+        exclude:
+          - '**/old/**'
+    - prefer-wildcard-pattern:
+        exclude:
+          - '**/old/**'
+    - no-equal-switch-expression-cases:
+        exclude:
+          - '**/old/**'
+    - prefer-simpler-patterns-null-check:
+        exclude:
+          - '**/old/**'
+    - avoid-duplicate-patterns:
+        exclude:
+          - '**/old/**'
+    - prefer-returning-conditional-expressions:
+        exclude:
+          - '**/old/**'
+    - avoid-unnecessary-return:
+        exclude:
+          - '**/old/**'
+          - 'frontend/data/json_serializable/**'
+    - avoid-future-tostring:
+        exclude:
+          - '**/old/**'
+    - prefer-test-matchers:
+        exclude:
+          - '**/old/**'
+    - prefer-correct-future-return-type:
+        exclude:
+          - '**/old/**'
+    - prefer-correct-stream-return-type:
+        exclude:
+          - '**/old/**'
+    - avoid-nested-futures:
+        exclude:
+          - '**/old/**'
+    - avoid-nested-streams-and-futures:
+        exclude:
+          - '**/old/**'
+    - avoid-accessing-other-classes-private-members:
+        exclude:
+          - '**/old/**'
+    - avoid-generics-shadowing:
+        exclude:
+          - '**/old/**'
+    - avoid-uncaught-future-errors:
+        exclude:
+          - '**/old/**'
+    - prefer-parentheses-with-if-null:
+        exclude:
+          - '**/old/**'
+    - avoid-keywords-in-wildcard-pattern:
+        exclude:
+          - '**/old/**'
+    - avoid-misused-wildcard-pattern:
+        exclude:
+          - '**/old/**'
+    - avoid-mutating-parameters:
+        exclude:
+          - '**/old/**'
+    - avoid-unnecessary-call:
+        exclude:
+          - '**/old/**'
+    - no-equal-nested-conditions:
+        exclude:
+          - '**/old/**'
+    - avoid-negated-conditions:
+        ignore-null-checks: true
+        exclude:
+          - '**/old/**'
+    - prefer-correct-error-name:
+        exclude:
+          - '**/old/**'
+    - map-keys-ordering:
+        exclude:
+          - '**/old/**'
+    - avoid-unnecessary-futures:
+        exclude:
+          - '**/old/**'
+    - avoid-shadowed-extension-methods:
+        exclude:
+          - '**/old/**'
+    - avoid-importing-entrypoint-exports:
+        exclude:
+          - '**/old/**'
+    - avoid-double-slash-imports:
+        exclude:
+          - '**/old/**'
+    - avoid-unnecessary-conditionals:
+        exclude:
+          - '**/old/**'
+    - missing-test-assertion:
+        include-assertions:
+          - verify
+          - verifyNever
+        exclude:
+          - '**/old/**'
+          - 'frontend/design_system/test/test_goldens.dart'
+    - prefer-correct-json-casts:
+        exclude:
+          - '**/old/**'
+    - avoid-async-call-in-sync-function:
+        exclude:
+          - '**/old/**'
+    - avoid-nullable-interpolation:
+        exclude:
+          - '**/old/**'
+          - 'scripts/**'
+          - 'frontend/domain/lib/src/services/logging_service_impl.dart'
+    - prefer-named-boolean-parameters:
+        exclude:
+          - '**/old/**'
+    - avoid-unused-instances:
+        exclude:
+          - '**/old/**'
+    - avoid-unnecessary-reassignment:
+        exclude:
+          - '**/old/**'
+    - prefer-getter-over-method:
+        exclude:
+          - '**/old/**'
+          - 'scripts/**'
+    - avoid-referencing-discarded-variables:
+        exclude:
+          - '**/old/**'
+    - avoid-unconditional-break:
+        exclude:
+          - '**/old/**'
+    - avoid-weak-cryptographic-algorithms:
+        exclude:
+          - '**/old/**'
+          - 'frontend/data/firebase_realtime_database/lib/src/firebase_realtime_database_firebase_channel_repository.dart'
+
+    - avoid-identical-exception-handling-blocks:
+        exclude:
+          - '**/old/**'
+    - move-variable-closer-to-its-usage:
+        exclude:
+          - '**/old/**'
+          - 'scripts/**'
+    - avoid-unnecessary-if:
+        exclude:
+          - '**/old/**'
+    - avoid-passing-default-values:
+        exclude:
+          - '**/old/**'
+    - avoid-passing-self-as-argument:
+        exclude:
+          - '**/old/**'
+    - parameters-ordering:
+        required: 'first'
+        default: 'last'
+        ignore-overridden: true
+        exclude:
+          - '**/old/**'
+          - 'scripts/**'
+    - avoid-wildcard-cases-with-enums:
+        exclude:
+          - '**/old/**'
+    - match-getter-setter-field-names:
+        exclude:
+          - '**/old/**'
+    - avoid-unnecessary-getter:
+        exclude:
+          - '**/old/**'
+    - avoid-extensions-on-records:
+        exclude:
+          - '**/old/**'
+    - avoid-nullable-parameters-with-default-values:
+        exclude:
+          - '**/old/**'
+    - avoid-local-functions:
+        exclude:
+          - '**/old/**'
+    - prefer-null-aware-spread:
+        exclude:
+          - '**/old/**'
+    - prefer-unique-test-names:
+        exclude:
+          - '**/old/**'
+    - avoid-inferrable-type-arguments:
+        exclude:
+          - '**/old/**'
+    - avoid-duplicate-cascades: false
+    - prefer-specific-cases-first:
+        exclude:
+          - '**/old/**'
+    - avoid-duplicate-switch-case-conditions:
+        exclude:
+          - '**/old/**'
+    - avoid-collection-mutating-methods:
+        exclude:
+          - '**/old/**'
+          - 'scripts/**'
+          - 'frontend/data/http/lib/src/http_api_repository.dart'
+    - prefer-explicit-type-arguments:
+        exclude:
+          - '**/old/**'
+    - avoid-unnecessary-super:
+        exclude:
+          - '**/old/**'
+    - prefer-correct-setter-parameter-name:
+        exclude:
+          - '**/old/**'
+    - prefer-prefixed-global-constants:
+        exclude:
+          - '**/old/**'
+    - prefer-explicit-function-type:
+        exclude:
+          - '**/old/**'
+    - prefer-switch-with-enums:
+        exclude:
+          - '**/old/**'
+    - avoid-misused-test-matchers:
+        exclude:
+          - '**/old/**'
+    - prefer-any-or-every:
+        exclude:
+          - '**/old/**'
+    - avoid-duplicate-test-assertions:
+        exclude:
+          - '**/old/**'
+    - avoid-duplicate-map-keys:
+        exclude:
+          - '**/old/**'
+    - move-variable-outside-iteration:
+        exclude:
+          - '**/old/**'
+    - avoid-nullable-tostring:
+        exclude:
+          - '**/old/**'
+    - avoid-duplicate-initializers:
+        exclude:
+          - '**/old/**'
+    - avoid-unused-after-null-check:
+        exclude:
+          - '**/old/**'
+    - avoid-unassigned-stream-subscriptions:
+        exclude:
+          - '**/old/**'
+          - 'scripts/**'
+    - avoid-not-encodable-in-to-json:
+        exclude:
+          - '**/old/**'
+    - avoid-contradictory-expressions:
+        exclude:
+          - '**/old/**'
+    - avoid-excessive-expressions:
+        exclude:
+          - '**/old/**'
+    - avoid-slow-collection-methods:
+        exclude:
+          - '**/old/**'
+    - prefer-overriding-parent-equality:
+        exclude:
+          - '**/old/**'
+    - no-magic-string:
+        exclude:
+          - '**/old/**'
+          - '**/test/**'
+          - '**/domain/**'
+          - '**/data/**'
+          - 'scripts/**'
+        ignored-invocations:
+          - print
+          - debugPrint
+          - finest
+          - finer
+          - fine
+          - config
+          - info
+          - warning
+          - severe
+          - shout
+    - avoid-collection-equality-checks:
+        exclude:
+          - '**/old/**'
+    - prefer-switch-with-sealed-classes:
+        exclude:
+          - '**/old/**'
+    - prefer-single-declaration-per-file:
+        exclude:
+          - '**/old/**'
+          - 'scripts/**'
+    - avoid-only-rethrow:
+        exclude:
+          - '**/old/**'
+    - prefer-named-parameters:
+        exclude:
+          - '**/old/**'
+    - prefer-abstract-final-static-class:
+        exclude:
+          - '**/old/**'
+    - avoid-unsafe-reduce:
+        exclude:
+          - '**/old/**'
+    - prefer-correct-throws: false
+    - prefer-boolean-prefixes:
+        ignored-names:
+          - followRedirects
+          - persistentConnection
+          - force
+        exclude:
+          - '**/old/**'
+          - 'scripts/**'
+          - 'frontend/data/**'
+    - dispose-class-fields:
+        exclude:
+          - '**/old/**'
+          - 'frontend/lib/features/**'
+          - 'frontend/domain/lib/src/services/**'
+    - avoid-suspicious-super-overrides:
+        exclude:
+          - '**/old/**'
+    - avoid-async-callback-in-fake-async:
+        exclude:
+          - '**/old/**'
+    - avoid-creating-vector-in-update:
+        exclude:
+          - '**/old/**'
+    - avoid-redundant-async-on-load:
+        exclude:
+          - '**/old/**'
+    - correct-game-instantiating:
+        exclude:
+          - '**/old/**'
+    - always-remove-listener:
+        exclude:
+          - '**/old/**'
+    - avoid-border-all:
+        exclude:
+          - '**/old/**'
+    - avoid-returning-widgets:
+        exclude:
+          - '**/old/**'
+    - avoid-shrink-wrap-in-lists:
+        exclude:
+          - '**/old/**'
+    - avoid-unnecessary-setstate:
+        exclude:
+          - '**/old/**'
+    - avoid-expanded-as-spacer:
+        exclude:
+          - '**/old/**'
+    - avoid-wrapping-in-padding:
+        exclude:
+          - '**/old/**'
+    - check-for-equals-in-render-object-setters:
+        exclude:
+          - '**/old/**'
+    - consistent-update-render-object:
+        exclude:
+          - '**/old/**'
+    - prefer-correct-edge-insets-constructor:
+        exclude:
+          - '**/old/**'
+    - use-setstate-synchronously:
+        exclude:
+          - '**/old/**'
+    - avoid-incomplete-copy-with:
+        exclude:
+          - '**/old/**'
+    - dispose-fields:
+        exclude:
+          - '**/old/**'
+    - avoid-empty-setstate:
+        exclude:
+          - '**/old/**'
+    - prefer-widget-private-members:
+        exclude:
+          - '**/old/**'
+    - prefer-action-button-tooltip:
+        exclude:
+          - '**/old/**'
+    - avoid-inherited-widget-in-initstate:
+        exclude:
+          - '**/old/**'
+    - avoid-late-context:
+        exclude:
+          - '**/old/**'
+    - avoid-unnecessary-stateful-widgets:
+        exclude:
+          - '**/old/**'
+    - avoid-stateless-widget-initialized-fields:
+        exclude:
+          - '**/old/**'
+    - avoid-unnecessary-overrides-in-state:
+        exclude:
+          - '**/old/**'
+    - prefer-dedicated-media-query-methods:
+        exclude:
+          - '**/old/**'
+    - avoid-recursive-widget-calls:
+        exclude:
+          - '**/old/**'
+    - prefer-text-rich:
+        exclude:
+          - '**/old/**'
+    - prefer-sliver-prefix:
+        exclude:
+          - '**/old/**'
+    - avoid-single-child-column-or-row:
+        exclude:
+          - '**/old/**'
+    - avoid-undisposed-instances:
+        exclude:
+          - '**/old/**'
+          - 'frontend/lib/features/app_shell/app_shell_view.dart'
+    - avoid-unnecessary-gesture-detector:
+        exclude:
+          - '**/old/**'
+    - avoid-missing-controller:
+        exclude:
+          - '**/old/**'
+    - prefer-for-loop-in-children:
+        exclude:
+          - '**/old/**'
+    - avoid-incorrect-image-opacity:
+        exclude:
+          - '**/old/**'
+    - prefer-use-prefix:
+        exclude:
+          - '**/old/**'
+    - avoid-conditional-hooks:
+        exclude:
+          - '**/old/**'
+    - avoid-hooks-outside-build:
+        exclude:
+          - '**/old/**'
+    - avoid-unnecessary-hook-widgets:
+        exclude:
+          - '**/old/**'
+    - prefer-use-callback:
+        exclude:
+          - '**/old/**'
+    - avoid-misused-hooks:
+        exclude:
+          - '**/old/**'
+    - avoid-functions-in-register-singleton:
+        exclude:
+          - '**/old/**'
+    - prefer-intl-name:
+        exclude:
+          - '**/old/**'
+    - prefer-providing-intl-description:
+        exclude:
+          - '**/old/**'
+    - provide-correct-intl-args:
+        exclude:
+          - '**/old/**'
+    - prefer-date-format:
+        exclude:
+          - '**/old/**'
+    - prefer-providing-intl-examples:
+        exclude:
+          - '**/old/**'
+    - prefer-custom-finder-over-find:
+        exclude:
+          - '**/old/**'
+    - prefer-symbol-over-key:
+        exclude:
+          - '**/old/**'
+    - avoid-watch-outside-build:
+        exclude:
+          - '**/old/**'
+    - avoid-read-inside-build:
+        exclude:
+          - '**/old/**'
+    - dispose-providers:
+        exclude:
+          - '**/old/**'
+    - prefer-multi-provider:
+        exclude:
+          - '**/old/**'
+    - avoid-instantiating-in-value-provider:
+        exclude:
+          - '**/old/**'
+    - avoid-ref-read-inside-build:
+        exclude:
+          - '**/old/**'
+    - avoid-ref-watch-outside-build:
+        exclude:
+          - '**/old/**'
+    - avoid-unnecessary-consumer-widgets:
+        exclude:
+          - '**/old/**'
+    - use-ref-read-synchronously:
+        exclude:
+          - '**/old/**'
+    - avoid-calling-notifier-members-inside-build:
+        exclude:
+          - '**/old/**'
+    - avoid-notifier-constructors:
+        exclude:
+          - '**/old/**'
+    - dispose-provided-instances:
+        exclude:
+          - '**/old/**'
+    - avoid-type-casts:
+        exclude:
+          - '**/test/**'
+          - '**/old/**'
+          - 'scripts/**'
+    - avoid-duplicate-constant-values:
+        exclude:
+          - '**/old/**'
+    - avoid-unnecessary-enum-prefix:
+        exclude:
+          - '**/old/**'
+    - avoid-unnecessary-enum-arguments:
+        exclude:
+          - '**/old/**'
+    - avoid-unused-assignment:
+        exclude:
+          - '**/old/**'
+    - unnecessary-trailing-comma: false
+    - avoid-empty-build-when:
+        exclude:
+          - '**/old/**'
+    - avoid-passing-build-context-to-blocs:
+        exclude:
+          - '**/old/**'
+    - prefer-padding-over-container:
+        exclude:
+          - '**/old/**'
+    - prefer-center-over-align:
+        exclude:
+          - '**/old/**'
+    - prefer-provider-extensions:
+        exclude:
+          - '**/old/**'
+    - prefer-sized-box-square:
+        exclude:
+          - '**/old/**'
+    - avoid-flexible-outside-flex:
+        exclude:
+          - '**/old/**'
+    - prefer-add-all:
+        exclude:
+          - '**/old/**'
+    - prefer-for-in:
+        exclude:
+          - '**/old/**'
+    - avoid-bloc-public-fields:
+        exclude:
+          - '**/old/**'
+          - frontend/lib/features/browse/browse_view_model.dart
+          - frontend/lib/features/portfolio/portfolio_view_model.dart
+    - prefer-immutable-bloc-events:
+        exclude:
+          - '**/old/**'
+    - avoid-returning-value-from-cubit-methods:
+        exclude:
+          - '**/old/**'
+          - frontend/lib/features/browse/browse_view_model.dart
+    - prefer-assigning-await-expressions:
+        exclude:
+          - '**/old/**'
+    - avoid-instantiating-in-bloc-value-provider:
+        exclude:
+          - '**/old/**'
+    - prefer-bloc-state-suffix:
+        exclude:
+          - '**/old/**'
+          - frontend/lib/features/portfolio/portfolio_view_model.dart
+    - record-fields-ordering:
+        exclude:
+          - '**/old/**'
+    - emit-new-bloc-state-instances:
+        exclude:
+          - '**/old/**'
+    - no-empty-string:
+        exclude:
+          - '**/old/**'
+          - 'scripts/**'
+          - frontend/data/http/lib/src/http_api_repository.dart
+          - frontend/data/json_serializable/lib/src/dtos/chip_dto.dart
+          - frontend/domain/lib/src/services/logging_service_impl.dart
+          - frontend/data/json_serializable/lib/src/property_entity_mapper.dart
+          - frontend/lib/features/browse/browse_view_model.dart
+          - frontend/design_system/test/test_goldens.dart
+          - frontend/domain/lib/src/entities/chip_entity.dart
+          - frontend/domain/lib/src/services/api_service_impl.dart
+    - use-closest-build-context:
+        exclude:
+          - '**/old/**'
+    - prefer-spacing:
+        exclude:
+          - '**/old/**'
+    - prefer-switch-expression:
+        exclude:
+          - '**/old/**'
+    - prefer-commenting-future-delayed:
+        exclude:
+          - '**/old/**'
+    - avoid-commented-out-code:
+        exclude:
+          - '**/old/**'
+    - prefer-transform-over-container:
+        exclude:
+          - '**/old/**'
+    - avoid-if-with-many-branches: false
+    - prefer-align-over-container:
+        exclude:
+          - '**/old/**'
+    - avoid-continue:
+        exclude:
+          - '**/old/**'
+          - 'scripts/**'
+    - avoid-complex-arithmetic-expressions:
+        exclude:
+          - '**/old/**'
+    - avoid-unnecessary-continue:
+        exclude:
+          - '**/old/**'
+    - avoid-unnecessary-block:
+        exclude:
+          - '**/old/**'
+    - prefer-redirecting-superclass-constructor:
+        exclude:
+          - '**/old/**'
+    - check-is-not-closed-after-async-gap:
+        exclude:
+          - '**/old/**'
+    - avoid-nested-assignments:
+        exclude:
+          - '**/old/**'
+    - pass-existing-future-to-future-builder:
+        exclude:
+          - '**/old/**'

@@ -2,16 +2,17 @@
 
 import 'package:auto_route/auto_route.dart';
 import 'package:domain/domain.dart';
-import 'package:monorepo/features/login/login_guard.dart';
+import '../features/login/login_guard.dart';
 
 import 'app_router.gr.dart';
 
 @AutoRouterConfig(replaceInRouteName: 'Screen|Page|View,Route')
 class AppRouter extends RootStackRouter {
-  AppRouter({required final AuthenticationService authenticationService})
-    : _authenticationService = authenticationService;
 
-  final AuthenticationService _authenticationService;
+  AppRouter({required final LocalStorageService localStorageService})
+    : _localStorageService = localStorageService;
+    
+  final LocalStorageService _localStorageService;
 
   static const _login = '/login';
   static const _home = '/home';
@@ -24,7 +25,7 @@ class AppRouter extends RootStackRouter {
       page: HomeRoute.page,
       path: _home,
       initial: true,
-      guards: [LoginGuard(authenticationService: _authenticationService)],
+      guards: [LoginGuard(localStorageService: _localStorageService)],
     ),
     AutoRoute(page: LoginRoute.page, path: _login),
     AutoRoute(page: SendMoneyRoute.page, path: _sendMoney),

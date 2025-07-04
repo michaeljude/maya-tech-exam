@@ -20,12 +20,12 @@ class _MayaApiServices implements MayaApiServices {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<List<AuthenticationDto>> login() async {
+  Future<void> signIn({required String email, required String password}) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<List<AuthenticationDto>>(
+    final _data = {'email': email, 'password': password};
+    final _options = _setStreamType<void>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -35,20 +35,7 @@ class _MayaApiServices implements MayaApiServices {
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<AuthenticationDto> _value;
-    try {
-      _value = _result.data!
-          .map(
-            (dynamic i) =>
-                AuthenticationDto.fromJson(i as Map<String, dynamic>),
-          )
-          .toList();
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
-      rethrow;
-    }
-    return _value;
+    await _dio.fetch<void>(_options);
   }
 
   @override

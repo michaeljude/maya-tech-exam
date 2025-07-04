@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
 
 @RoutePage()
@@ -22,82 +23,71 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Send Money'),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              const Text(
-                'Send Money',
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+  Widget build(final BuildContext context) => Scaffold(
+    appBar: AppBar(
+      title: const Text('Send Money'),
+      backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+    ),
+    body: Padding(
+      padding: const EdgeInsets.all(16),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            const Text(
+              'Send Money',
+              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 32),
+            TextFormField(
+              controller: _recipientController,
+              decoration: const InputDecoration(
+                labelText: 'Recipient Phone/Email',
+                border: OutlineInputBorder(),
+                hintText: 'Enter phone number or email',
               ),
-              const SizedBox(height: 32),
-              TextFormField(
-                controller: _recipientController,
-                decoration: const InputDecoration(
-                  labelText: 'Recipient Phone/Email',
-                  border: OutlineInputBorder(),
-                  hintText: 'Enter phone number or email',
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter recipient details';
-                  }
-                  return null;
-                },
+              validator: (final value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter recipient details';
+                }
+
+                return null;
+              },
+            ),
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: _amountController,
+              decoration: const InputDecoration(
+                labelText: 'Amount',
+                border: OutlineInputBorder(),
+                prefixText: r'$',
               ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _amountController,
-                decoration: const InputDecoration(
-                  labelText: 'Amount',
-                  border: OutlineInputBorder(),
-                  prefixText: '\$',
-                ),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter amount';
-                  }
-                  final amount = double.tryParse(value);
-                  if (amount == null || amount <= 0) {
-                    return 'Please enter a valid amount';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 24),
-              SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      // TODO: Implement send money logic
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text(
-                            'Send money functionality coming soon!',
-                          ),
-                        ),
-                      );
-                    }
-                  },
-                  child: const Text('Send Money'),
-                ),
-              ),
-            ],
-          ),
+              keyboardType: TextInputType.number,
+              validator: (final value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter amount';
+                }
+                final amount = double.tryParse(value);
+                if (amount == null || amount <= 0) {
+                  return 'Please enter a valid amount';
+                }
+
+                return null;
+              },
+            ),
+            const SizedBox(height: 24),
+            MayaButton(
+              text: 'Send Money',
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  // TODO: Implement send money logic
+                }
+              },
+            ),
+          ],
         ),
       ),
-    );
-  }
+    ),
+  );
 }

@@ -1,16 +1,19 @@
-import 'package:data_json_serializable/data_json_serializable.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'maya_api_services.g.dart';
 
-@RestApi(baseUrl: "https://jsonplaceholder.typicode.com")
+@RestApi(baseUrl: 'https://jsonplaceholder.typicode.com')
 abstract class MayaApiServices {
-  factory MayaApiServices(Dio dio, {String baseUrl}) = _MayaApiServices;
+  factory MayaApiServices(final Dio dio, {final String baseUrl}) =
+      _MayaApiServices;
 
-  @POST("/users")
-  Future<List<AuthenticationDto>> login();
+  @POST('/users')
+  Future<void> signIn({
+    @Field('email') required final String email,
+    @Field('password') required final String password,
+  });
 
-  @POST("/users") 
+  @POST('/users')
   Future<void> logout();
 }

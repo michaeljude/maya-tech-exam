@@ -1,10 +1,6 @@
 import 'dart:async';
 
-import '../entities/authentication_entity.dart';
-import '../repositories/authentication_repository.dart';
-import '../result/result.dart';
-import 'authentication_service.dart';
-import 'local_storage_service.dart';
+import '../../domain.dart';
 
 class AuthenticationServiceImpl implements AuthenticationService {
   const AuthenticationServiceImpl({
@@ -17,21 +13,32 @@ class AuthenticationServiceImpl implements AuthenticationService {
   final LocalStorageService _localStorageService;
 
   @override
-  Stream<Result<AuthenticationEntity?>> get authState =>
-      _authenticationRepository.authState;
-
-  @override
-  Future<Result<void>> signIn({
+  Future<Result<AuthenticationEntity>> signIn({
     required final String email,
     required final String password,
   }) async {
-    await _authenticationRepository.signIn(email: email, password: password);
+    final result = await _authenticationRepository.signIn(
+      email: email,
+      password: password,
+    );
 
-    return _localStorageService.save('isAuthenticated', value: 'authenticated');
+    await _localStorageService.save('email', value: email);
+    await _localStorageService.save('password', value: password);
+
+    await _localStorageService.save('isAuthenticated', value: 'authenticated');
+
+    return result;
   }
 
   @override
-  Future<void> signOut() async {
-    await _authenticationRepository.signOut();
+  Future<Result<AuthenticationEntity>> signOut() async {
+    final result = await _authenticationRepository.signOut();
+
+    await _localStorageService.delete('email');
+    await _localStorageService.delete('password');
+
+    await _localStorageService.delete('isAuthenticated');
+
+    return result;
   }
 }

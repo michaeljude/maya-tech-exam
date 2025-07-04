@@ -7,11 +7,10 @@ import 'package:domain/domain.dart';
 import '../../router/app_router.gr.dart';
 
 class LoginGuard extends AutoRouteGuard {
-  const LoginGuard({
-    required final AuthenticationService authenticationService,
-  }) : _authenticationService = authenticationService;
+  const LoginGuard({required final LocalStorageService localStorageService})
+    : _localStorageService = localStorageService;
 
-  final AuthenticationService _authenticationService;
+  final LocalStorageService _localStorageService;
 
   @override
   Future<void> onNavigation(
@@ -20,14 +19,9 @@ class LoginGuard extends AutoRouteGuard {
   ) async {
     try {
       // Get the current auth state.
-      final authState = await _authenticationService.authState.first;
+      final authState = await _localStorageService.get('isAuthenticated');
 
-      final authEntity = switch (authState) {
-        Success() => authState.value,
-        Failure() => null,
-      };
-
-      final isAuthenticated = authEntity is SignedInAuthenticationEntity;
+      final isAuthenticated = authState != null && authState == 'authenticated';
 
       if (isAuthenticated) {
         resolver.next();

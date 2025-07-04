@@ -9,12 +9,12 @@ class AuthenticationDto {
     required this.username,
     required this.name,
   });
-
-  factory AuthenticationDto.fromJson(Map<String, dynamic> json) =>
+  factory AuthenticationDto.fromJson(final Map<String, dynamic> json) =>
       _$AuthenticationDtoFromJson(json);
-  Map<String, dynamic> toJson() => _$AuthenticationDtoToJson(this);
 
   final String email;
   final String username;
   final String name;
+
+  Map<String, dynamic> toJson() => _$AuthenticationDtoToJson(this);
 }
