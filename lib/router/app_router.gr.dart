@@ -11,13 +11,13 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i5;
 import 'package:flutter/material.dart' as _i6;
-import 'package:monorepo/features/home/home_screen.dart' as _i1;
-import 'package:monorepo/features/login/login_screen.dart' as _i2;
-import 'package:monorepo/features/send_money/send_money_screen.dart' as _i3;
-import 'package:monorepo/features/transactions/transactions_screen.dart' as _i4;
+import 'package:monorepo/features/home/home_view.dart' as _i1;
+import 'package:monorepo/features/login/login_view.dart' as _i2;
+import 'package:monorepo/features/send_money/send_money_view.dart' as _i3;
+import 'package:monorepo/features/transactions/transactions_view.dart' as _i4;
 
 /// generated route for
-/// [_i1.HomeScreen]
+/// [_i1.HomeView]
 class HomeRoute extends _i5.PageRouteInfo<void> {
   const HomeRoute({List<_i5.PageRouteInfo>? children})
     : super(HomeRoute.name, initialChildren: children);
@@ -27,13 +27,13 @@ class HomeRoute extends _i5.PageRouteInfo<void> {
   static _i5.PageInfo page = _i5.PageInfo(
     name,
     builder: (data) {
-      return const _i1.HomeScreen();
+      return const _i1.HomeView();
     },
   );
 }
 
 /// generated route for
-/// [_i2.LoginScreen]
+/// [_i2.LoginView]
 class LoginRoute extends _i5.PageRouteInfo<LoginRouteArgs> {
   LoginRoute({
     _i6.Key? key,
@@ -53,7 +53,7 @@ class LoginRoute extends _i5.PageRouteInfo<LoginRouteArgs> {
       final args = data.argsAs<LoginRouteArgs>(
         orElse: () => const LoginRouteArgs(),
       );
-      return _i2.LoginScreen(key: args.key, onResult: args.onResult);
+      return _i2.LoginView(key: args.key, onResult: args.onResult);
     },
   );
 }
@@ -82,7 +82,7 @@ class LoginRouteArgs {
 }
 
 /// generated route for
-/// [_i3.SendMoneyScreen]
+/// [_i3.SendMoneyView]
 class SendMoneyRoute extends _i5.PageRouteInfo<void> {
   const SendMoneyRoute({List<_i5.PageRouteInfo>? children})
     : super(SendMoneyRoute.name, initialChildren: children);
@@ -92,13 +92,13 @@ class SendMoneyRoute extends _i5.PageRouteInfo<void> {
   static _i5.PageInfo page = _i5.PageInfo(
     name,
     builder: (data) {
-      return const _i3.SendMoneyScreen();
+      return const _i3.SendMoneyView();
     },
   );
 }
 
 /// generated route for
-/// [_i4.TransactionsScreen]
+/// [_i4.TransactionsView]
 class TransactionsRoute extends _i5.PageRouteInfo<void> {
   const TransactionsRoute({List<_i5.PageRouteInfo>? children})
     : super(TransactionsRoute.name, initialChildren: children);
@@ -108,7 +108,7 @@ class TransactionsRoute extends _i5.PageRouteInfo<void> {
   static _i5.PageInfo page = _i5.PageInfo(
     name,
     builder: (data) {
-      return const _i4.TransactionsScreen();
+      return const _i4.TransactionsView();
     },
   );
 }

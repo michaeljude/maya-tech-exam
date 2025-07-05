@@ -3,14 +3,14 @@ import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
 
 @RoutePage()
-class SendMoneyScreen extends StatefulWidget {
-  const SendMoneyScreen({super.key});
+class SendMoneyView extends StatefulWidget {
+  const SendMoneyView({super.key});
 
   @override
-  State<SendMoneyScreen> createState() => _SendMoneyScreenState();
+  State<SendMoneyView> createState() => _SendMoneyViewState();
 }
 
-class _SendMoneyScreenState extends State<SendMoneyScreen> {
+class _SendMoneyViewState extends State<SendMoneyView> {
   final _formKey = GlobalKey<FormState>();
   final _amountController = TextEditingController();
   final _recipientController = TextEditingController();

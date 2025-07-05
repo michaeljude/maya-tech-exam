@@ -8,8 +8,8 @@ import '../authentication/authentication_view_model.dart';
 import '../authentication/authentication_view_state.dart';
 
 @RoutePage()
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key, this.onResult});
+class LoginView extends StatelessWidget {
+  const LoginView({super.key, this.onResult});
 
   final void Function({required bool isSuccessLogin})? onResult;
 

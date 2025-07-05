@@ -2,8 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 @RoutePage()
-class TransactionsScreen extends StatelessWidget {
-  const TransactionsScreen({super.key});
+class TransactionsView extends StatelessWidget {
+  const TransactionsView({super.key});
 
   @override
   Widget build(final BuildContext context) => Scaffold(
