@@ -24,6 +24,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get login => 'Login';
 
   @override
+  String get walletBalance => 'Wallet Balance';
+
+  @override
+  String get sendMoney => 'Send Money';
+
+  @override
+  String get viewTransactions => 'View Transactions';
+
+  @override
   String get pleaseEnterYourEmail => 'Please enter your email';
 
   @override

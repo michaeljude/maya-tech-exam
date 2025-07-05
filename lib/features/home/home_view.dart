@@ -4,6 +4,7 @@ import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../app/extension/context_extension.dart';
 import '../../router/app_router.gr.dart';
 import '../authentication/authentication_view_model.dart';
 import 'home_view_model.dart';
@@ -40,9 +41,12 @@ class HomeView extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
-                const Text(
-                  'Wallet Balance',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                Text(
+                  context.intl.walletBalance,
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -72,14 +76,14 @@ class HomeView extends StatelessWidget {
                 ),
                 const SizedBox(height: 86),
                 MayaButton(
-                  text: 'Send Money',
+                  text: context.intl.sendMoney,
                   onPressed: () async {
                     await context.router.push(const SendMoneyRoute());
                   },
                 ),
                 const SizedBox(height: 16),
                 MayaButton(
-                  text: 'View Transactions',
+                  text: context.intl.viewTransactions,
                   onPressed: () async {
                     await context.router.push(const TransactionsRoute());
                   },
