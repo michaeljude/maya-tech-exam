@@ -40,6 +40,10 @@ void main() async {
       providers: [
         Provider<AuthenticationService>(create: (_) => authenticationService),
         Provider<LocalStorageService>(create: (_) => localStorageService),
+        Provider<WalletService>(
+          create: (_) =>
+              WalletServiceImpl(localStorageService: localStorageService),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [

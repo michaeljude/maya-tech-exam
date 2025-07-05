@@ -22,8 +22,8 @@ class MayaScaffold extends StatelessWidget {
         if (onLogout != null)
           isSigningOut
               ? Container(
-                  width: 24,
-                  height: 24,
+                  width: 18,
+                  height: 18,
                   padding: const EdgeInsets.only(right: 8),
                   child: const CircularProgressIndicator(color: Colors.black),
                 )

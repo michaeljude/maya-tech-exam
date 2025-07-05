@@ -33,10 +33,7 @@ class AuthenticationServiceImpl implements AuthenticationService {
           await _localStorageService.save(
             'wallet',
             value: jsonEncode(
-              WalletEntity(
-                name: 'Wallet - ${value.username}',
-                balance: 10000,
-              ).toJson(),
+              WalletEntity(name: value.username, balance: 10000).toJson(),
             ),
           );
           await _localStorageService.save(
@@ -57,9 +54,20 @@ class AuthenticationServiceImpl implements AuthenticationService {
     final result = await _authenticationRepository.signOut();
 
     await _localStorageService.delete('email');
-
+    await _localStorageService.delete('username');
+    await _localStorageService.delete('name');
+    await _localStorageService.delete('wallet');
     await _localStorageService.delete('isAuthenticated');
 
     return result;
   }
+
+  @override
+  Future<String?> getEmail() async => _localStorageService.get('email');
+
+  @override
+  Future<String?> getName() async => _localStorageService.get('name');
+
+  @override
+  Future<String?> getUsername() async => _localStorageService.get('username');
 }

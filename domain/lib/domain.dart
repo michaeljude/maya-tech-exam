@@ -6,3 +6,5 @@ export 'src/services/authentication_service.dart';
 export 'src/services/authentication_service_impl.dart';
 export 'src/services/local_storage_service.dart';
 export 'src/services/local_storage_service_impl.dart';
+export 'src/services/wallet_service.dart';
+export 'src/services/wallet_service_impl.dart';

@@ -7,4 +7,10 @@ abstract class AuthenticationService {
   });
 
   Future<Result<AuthenticationEntity>> signOut();
+
+  Future<String?> getUsername();
+
+  Future<String?> getEmail();
+
+  Future<String?> getName();
 }
