@@ -140,6 +140,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please enter your password'**
   String get pleaseEnterYourPassword;
+
+  /// No description provided for @passwordMustBeAtLeast6Characters.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 6 characters'**
+  String get passwordMustBeAtLeast6Characters;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

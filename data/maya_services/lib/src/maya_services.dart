@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:domain/domain.dart';
 
 import 'maya_api_services.dart';
@@ -18,9 +19,19 @@ class MayaServices implements AuthenticationRepository {
     try {
       await _mayaApiServices.signIn(email: email, password: password);
 
+      final users = await _mayaApiServices.getUsers();
+
+      final user = users.firstWhereOrNull((final user) => user.email == email);
+
+      if (user == null) {
+        throw Exception('User not found');
+      }
+
       final authenticationEntity = AuthenticationEntity.signedIn(
         email: email,
         password: password,
+        username: user.username,
+        name: user.name,
       );
 
       return Success(

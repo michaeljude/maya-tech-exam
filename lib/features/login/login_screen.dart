@@ -89,6 +89,10 @@ class LoginScreen extends StatelessWidget {
                         return context.intl.pleaseEnterYourPassword;
                       }
 
+                      if (value.length <= 5) {
+                        return context.intl.passwordMustBeAtLeast6Characters;
+                      }
+
                       return null;
                     },
                   ),
@@ -117,7 +121,8 @@ class _MayaErrorBottomSheet extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) => Scaffold(
-    body: Padding(
+    body: Container(
+      width: double.infinity,
       padding: const EdgeInsets.all(16),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

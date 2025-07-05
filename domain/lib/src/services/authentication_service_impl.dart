@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
 
 import '../../domain.dart';
+import '../entities/wallet_entity.dart';
 
 class AuthenticationServiceImpl implements AuthenticationService {
   const AuthenticationServiceImpl({
@@ -22,10 +24,30 @@ class AuthenticationServiceImpl implements AuthenticationService {
       password: password,
     );
 
-    await _localStorageService.save('email', value: email);
-    await _localStorageService.save('password', value: password);
+    switch (result) {
+      case Success(value: final value):
+        if (value is SignedInAuthenticationEntity) {
+          await _localStorageService.save('email', value: value.email);
+          await _localStorageService.save('username', value: value.username);
+          await _localStorageService.save('name', value: value.username);
+          await _localStorageService.save(
+            'wallet',
+            value: jsonEncode(
+              WalletEntity(
+                name: 'Wallet - ${value.username}',
+                balance: 10000,
+              ).toJson(),
+            ),
+          );
+          await _localStorageService.save(
+            'isAuthenticated',
+            value: 'authenticated',
+          );
+        }
 
-    await _localStorageService.save('isAuthenticated', value: 'authenticated');
+      case Failure():
+        break;
+    }
 
     return result;
   }
@@ -35,7 +57,6 @@ class AuthenticationServiceImpl implements AuthenticationService {
     final result = await _authenticationRepository.signOut();
 
     await _localStorageService.delete('email');
-    await _localStorageService.delete('password');
 
     await _localStorageService.delete('isAuthenticated');
 

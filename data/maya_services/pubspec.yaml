@@ -9,6 +9,7 @@ environment:
   sdk: '>=3.8.1 <4.0.0'
 
 dependencies:
+  collection: ^1.19.1
   data_json_serializable:
     path: ../json_serializable
   dio: ^5.8.0+1

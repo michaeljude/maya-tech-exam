@@ -8,6 +8,8 @@ abstract class AuthenticationEntity with _$AuthenticationEntity {
   factory AuthenticationEntity.signedIn({
     required final String email,
     required final String password,
+    required final String username,
+    required final String name,
   }) = SignedInAuthenticationEntity;
 
   factory AuthenticationEntity.signedOut({final String? errorMessage}) =

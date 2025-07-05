@@ -78,11 +78,13 @@ String toString() {
 
 
 class SignedInAuthenticationEntity implements AuthenticationEntity {
-   SignedInAuthenticationEntity({required this.email, required this.password});
+   SignedInAuthenticationEntity({required this.email, required this.password, required this.username, required this.name});
   
 
  final  String email;
  final  String password;
+ final  String username;
+ final  String name;
 
 /// Create a copy of AuthenticationEntity
 /// with the given fields replaced by the non-null parameter values.
@@ -94,16 +96,16 @@ $SignedInAuthenticationEntityCopyWith<SignedInAuthenticationEntity> get copyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SignedInAuthenticationEntity&&(identical(other.email, email) || other.email == email)&&(identical(other.password, password) || other.password == password));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SignedInAuthenticationEntity&&(identical(other.email, email) || other.email == email)&&(identical(other.password, password) || other.password == password)&&(identical(other.username, username) || other.username == username)&&(identical(other.name, name) || other.name == name));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,email,password);
+int get hashCode => Object.hash(runtimeType,email,password,username,name);
 
 @override
 String toString() {
-  return 'AuthenticationEntity.signedIn(email: $email, password: $password)';
+  return 'AuthenticationEntity.signedIn(email: $email, password: $password, username: $username, name: $name)';
 }
 
 
@@ -114,7 +116,7 @@ abstract mixin class $SignedInAuthenticationEntityCopyWith<$Res> implements $Aut
   factory $SignedInAuthenticationEntityCopyWith(SignedInAuthenticationEntity value, $Res Function(SignedInAuthenticationEntity) _then) = _$SignedInAuthenticationEntityCopyWithImpl;
 @useResult
 $Res call({
- String email, String password
+ String email, String password, String username, String name
 });
 
 
@@ -131,10 +133,12 @@ class _$SignedInAuthenticationEntityCopyWithImpl<$Res>
 
 /// Create a copy of AuthenticationEntity
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? email = null,Object? password = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? email = null,Object? password = null,Object? username = null,Object? name = null,}) {
   return _then(SignedInAuthenticationEntity(
 email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String,password: null == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
+as String,username: null == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
+as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }
