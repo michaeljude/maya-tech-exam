@@ -1,5 +1,5 @@
 import 'package:data_flutter_secure_storage/data_flutter_secure_storage.dart';
-import 'package:data_maya_services/data_maya_services.dart';
+import 'package:data_maya/data_maya.dart';
 import 'package:dio/dio.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
@@ -23,8 +23,8 @@ void main() async {
   dio.interceptors.add(LogInterceptor(responseBody: true, requestBody: true));
   final authenticationService = AuthenticationServiceImpl(
     localStorageService: localStorageService,
-    authenticationRepository: MayaServices(
-      mayaApiServices: MayaApiServices(dio),
+    authenticationRepository: MayaRepository(
+      mayaApiRepository: MayaApiRepository(dio),
     ),
   );
   final localStorageResult = await localStorageService.initialize();
@@ -42,7 +42,12 @@ void main() async {
         Provider<LocalStorageService>(create: (_) => localStorageService),
         Provider<WalletService>(
           create: (_) =>
-              WalletServiceImpl(localStorageService: localStorageService),
+              WalletServiceImpl(
+                localStorageService: localStorageService,
+                walletRepository: MayaRepository(
+                  mayaApiRepository: MayaApiRepository(dio),
+                ),
+              ),
         ),
       ],
       child: MultiBlocProvider(

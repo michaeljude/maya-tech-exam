@@ -3,13 +3,13 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 import 'package:domain/domain.dart';
 
-import 'maya_api_services.dart';
+import 'maya_api_repository.dart';
 
-class MayaServices implements AuthenticationRepository {
-  MayaServices({required final MayaApiServices mayaApiServices})
-    : _mayaApiServices = mayaApiServices;
+class MayaRepository implements AuthenticationRepository, WalletRepository {
+  MayaRepository({required final MayaApiRepository mayaApiRepository})
+    : _mayaApiRepository = mayaApiRepository;
 
-  final MayaApiServices _mayaApiServices;
+  final MayaApiRepository _mayaApiRepository;
 
   @override
   Future<Result<AuthenticationEntity>> signIn({
@@ -17,9 +17,9 @@ class MayaServices implements AuthenticationRepository {
     required final String password,
   }) async {
     try {
-      await _mayaApiServices.signIn(email: email, password: password);
+      await _mayaApiRepository.signIn(email: email, password: password);
 
-      final users = await _mayaApiServices.getUsers();
+      final users = await _mayaApiRepository.getUsers();
 
       final user = users.firstWhereOrNull((final user) => user.email == email);
 
@@ -50,13 +50,34 @@ class MayaServices implements AuthenticationRepository {
   @override
   Future<Result<AuthenticationEntity>> signOut() async {
     try {
-      await _mayaApiServices.logout();
+      await _mayaApiRepository.logout();
 
       return Success(AuthenticationEntity.signedOut(), onRetry: signOut);
     } catch (error, stackTrace) {
       return UnknownFailure(
         message: error.toString(),
         onRetry: signOut,
+        stackTrace: stackTrace,
+      );
+    }
+  }
+
+  @override
+  Future<Result<void>> sendMoney({
+    required final double amount,
+    required final String recipient,
+  }) async {
+    try {
+      await _mayaApiRepository.sendMoney(amount: amount, recipient: recipient);
+
+      return Success(
+        null,
+        onRetry: () => sendMoney(amount: amount, recipient: recipient),
+      );
+    } catch (error, stackTrace) {
+      return UnknownFailure(
+        message: error.toString(),
+        onRetry: () => sendMoney(amount: amount, recipient: recipient),
         stackTrace: stackTrace,
       );
     }

@@ -2,12 +2,12 @@ import 'package:data_json_serializable/data_json_serializable.dart';
 import 'package:dio/dio.dart' hide Headers;
 import 'package:retrofit/retrofit.dart';
 
-part 'maya_api_services.g.dart';
+part 'maya_api_repository.g.dart';
 
 @RestApi(baseUrl: 'https://jsonplaceholder.typicode.com')
-abstract class MayaApiServices {
-  factory MayaApiServices(final Dio dio, {final String baseUrl}) =
-      _MayaApiServices;
+abstract class MayaApiRepository {
+  factory MayaApiRepository(final Dio dio, {final String baseUrl}) =
+      _MayaApiRepository;
 
   @POST('/users')
   Future<void> signIn({
@@ -22,6 +22,16 @@ abstract class MayaApiServices {
     'Connection': 'keep-alive',
   })
   Future<List<AuthenticationDto>> getUsers();
+
+  @POST('/posts')
+  @Headers(<String, String>{
+    'Accept': '*/*',
+    'Connection': 'keep-alive',
+  })
+  Future<void> sendMoney({
+    @Field('amount') required final double amount,
+    @Field('recipient') required final String recipient,
+  });
 
   @POST('/users')
   Future<void> logout();

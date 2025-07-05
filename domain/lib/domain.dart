@@ -1,6 +1,7 @@
 export 'src/entities/authentication_entity.dart';
 export 'src/repositories/authentication_repository.dart';
 export 'src/repositories/local_storage_repository.dart';
+export 'src/repositories/wallet_repository.dart';
 export 'src/result/result.dart';
 export 'src/services/authentication_service.dart';
 export 'src/services/authentication_service_impl.dart';

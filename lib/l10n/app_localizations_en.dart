@@ -24,6 +24,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get login => 'Login';
 
   @override
+  String get amount => 'Amount';
+
+  @override
+  String get recipientPhone => 'Recipient Phone';
+
+  @override
   String get walletBalance => 'Wallet Balance';
 
   @override

@@ -68,4 +68,12 @@ class AuthenticationViewModel extends Cubit<AuthenticationViewState> {
       case Failure():
     }
   }
+
+  @override
+  Future<void> close() {
+    state.emailController.dispose();
+    state.passwordController.dispose();
+
+    return super.close();
+  }
 }

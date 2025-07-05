@@ -21,7 +21,7 @@ models_js:
 	cd data/json_serializable && dart run build_runner build --delete-conflicting-outputs
 
 models_maya:
-	cd data/maya_services && dart run build_runner build --delete-conflicting-outputs
+	cd data/maya && dart run build_runner build --delete-conflicting-outputs
 
 models_design_system:
 	cd design_system && dart run build_runner build --delete-conflicting-outputs

@@ -123,6 +123,18 @@ abstract class AppLocalizations {
   /// **'Login'**
   String get login;
 
+  /// No description provided for @amount.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get amount;
+
+  /// No description provided for @recipientPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Recipient Phone'**
+  String get recipientPhone;
+
   /// No description provided for @walletBalance.
   ///
   /// In en, this message translates to:

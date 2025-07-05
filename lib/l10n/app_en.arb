@@ -8,6 +8,8 @@
     "email": "Email",
     "password": "Password",
     "login": "Login",
+    "amount": "Amount",
+    "recipientPhone": "Recipient Phone",
     "walletBalance": "Wallet Balance",
     "sendMoney": "Send Money",
     "viewTransactions": "View Transactions",

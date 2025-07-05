@@ -1,92 +1,158 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:design_system/design_system.dart';
+import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../app/extension/context_extension.dart';
+import 'send_money_view_model.dart';
+import 'send_money_view_state.dart';
 
 @RoutePage()
-class SendMoneyView extends StatefulWidget {
+class SendMoneyView extends StatelessWidget {
   const SendMoneyView({super.key});
 
   @override
-  State<SendMoneyView> createState() => _SendMoneyViewState();
+  Widget build(final BuildContext context) => BlocProvider(
+    create: (final context) =>
+        SendMoneyViewModel(context.read<WalletService>()),
+    child: BlocListener<SendMoneyViewModel, SendMoneyViewState>(
+      listener: (final context, final state) async {
+        final isSuccess = state.isSuccess;
+        final errorMessage = state.errorMessage;
+
+        if (isSuccess) {
+          await showModalBottomSheet<void>(
+            context: context,
+            builder: (final context) => const _MayaBottomSheet(
+              message: 'Money sent successfully',
+              isSuccess: true,
+            ),
+          );
+          if (context.mounted) {
+            context.router.pop();
+          }
+        } else if (errorMessage != null) {
+          await showModalBottomSheet<void>(
+            context: context,
+            builder: (final context) =>
+                _MayaBottomSheet(message: errorMessage, isSuccess: false),
+          );
+        }
+      },
+      child: Builder(
+        builder: (final context) => MayaScaffold(
+          body: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Form(
+              key: context.select<SendMoneyViewModel, GlobalKey<FormState>>(
+                (final vm) => vm.state.formKey,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    context.intl.sendMoney,
+                    style: const TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 32),
+                  MayaMobileNumberText(
+                    labelText: context.intl.recipientPhone,
+                    controller: context
+                        .select<SendMoneyViewModel, TextEditingController>(
+                          (final vm) => vm.state.recipientController,
+                        ),
+                    validator: (final value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter recipient phone';
+                      }
+
+                      final validFormats = [
+                        RegExp(r'^\d{3}-\d{4}-\d{4}$'),
+                        RegExp(r'^\d{3}-\d{3}-\d{4}$'),
+                      ];
+
+                      if (!validFormats.any(
+                        (final format) => format.hasMatch(value),
+                      )) {
+                        return 'Please enter a valid amount';
+                      }
+
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  MayaAmountText(
+                    labelText: context.intl.amount,
+                    controller: context
+                        .select<SendMoneyViewModel, TextEditingController>(
+                          (final vm) => vm.state.amountController,
+                        ),
+                    validator: (final value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter amount';
+                      }
+
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 24),
+                  MayaButton(
+                    text: context.intl.sendMoney,
+                    isLoading: context.select<SendMoneyViewModel, bool>(
+                      (final vm) => vm.state.isLoading,
+                    ),
+                    onPressed: () async {
+                      if (context.mounted) {
+                        final currentState = context
+                            .read<SendMoneyViewModel>()
+                            .state
+                            .formKey
+                            .currentState;
+                        if (currentState != null && currentState.validate()) {
+                          await context.read<SendMoneyViewModel>().sendMoney();
+                        }
+                      }
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
 }
 
-class _SendMoneyViewState extends State<SendMoneyView> {
-  final _formKey = GlobalKey<FormState>();
-  final _amountController = TextEditingController();
-  final _recipientController = TextEditingController();
+class _MayaBottomSheet extends StatelessWidget {
+  const _MayaBottomSheet({required this.message, required this.isSuccess});
 
-  @override
-  void dispose() {
-    _amountController.dispose();
-    _recipientController.dispose();
-    super.dispose();
-  }
+  final String message;
+  final bool isSuccess;
 
   @override
   Widget build(final BuildContext context) => Scaffold(
-    appBar: AppBar(
-      title: const Text('Send Money'),
-      backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-    ),
-    body: Padding(
+    body: Container(
+      width: double.infinity,
       padding: const EdgeInsets.all(16),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            const Text(
-              'Send Money',
-              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 32),
-            TextFormField(
-              controller: _recipientController,
-              decoration: const InputDecoration(
-                labelText: 'Recipient Phone/Email',
-                border: OutlineInputBorder(),
-                hintText: 'Enter phone number or email',
-              ),
-              validator: (final value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter recipient details';
-                }
-
-                return null;
-              },
-            ),
-            const SizedBox(height: 16),
-            TextFormField(
-              controller: _amountController,
-              decoration: const InputDecoration(
-                labelText: 'Amount',
-                border: OutlineInputBorder(),
-                prefixText: r'$',
-              ),
-              keyboardType: TextInputType.number,
-              validator: (final value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter amount';
-                }
-                final amount = double.tryParse(value);
-                if (amount == null || amount <= 0) {
-                  return 'Please enter a valid amount';
-                }
-
-                return null;
-              },
-            ),
-            const SizedBox(height: 24),
-            MayaButton(
-              text: 'Send Money',
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  // TODO: Implement send money logic
-                }
-              },
-            ),
-          ],
-        ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          if (isSuccess)
+            const Icon(Icons.check_circle, color: Colors.green, size: 48)
+          else
+            const Icon(Icons.error_outline, color: Colors.red, size: 48),
+          const SizedBox(height: 16),
+          Text(
+            message,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 16, color: Colors.black87),
+          ),
+        ],
       ),
     ),
   );
