@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../app/extension/context_extension.dart';
+import '../authentication/authentication_view_model.dart';
 import 'send_money_view_model.dart';
 import 'send_money_view_state.dart';
 
@@ -24,8 +25,8 @@ class SendMoneyView extends StatelessWidget {
         if (isSuccess) {
           await showModalBottomSheet<void>(
             context: context,
-            builder: (final context) => const _MayaBottomSheet(
-              message: 'Money sent successfully',
+            builder: (final context) => _MayaBottomSheet(
+              message: context.intl.moneySentSuccessfully,
               isSuccess: true,
             ),
           );
@@ -42,6 +43,12 @@ class SendMoneyView extends StatelessWidget {
       },
       child: Builder(
         builder: (final context) => MayaScaffold(
+          onLogout: () async {
+            await context.read<AuthenticationViewModel>().signOut();
+          },
+          isSigningOut: context.select<AuthenticationViewModel, bool>(
+            (final vm) => vm.state.isSigningOut,
+          ),
           body: Padding(
             padding: const EdgeInsets.all(16),
             child: Form(
@@ -59,7 +66,7 @@ class SendMoneyView extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 32),
-                  MayaMobileNumberText(
+                  MayaMobileNumberTextField(
                     labelText: context.intl.recipientPhone,
                     controller: context
                         .select<SendMoneyViewModel, TextEditingController>(
@@ -67,7 +74,7 @@ class SendMoneyView extends StatelessWidget {
                         ),
                     validator: (final value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter recipient phone';
+                        return context.intl.pleaseEnterRecipientPhone;
                       }
 
                       final validFormats = [
@@ -78,14 +85,14 @@ class SendMoneyView extends StatelessWidget {
                       if (!validFormats.any(
                         (final format) => format.hasMatch(value),
                       )) {
-                        return 'Please enter a valid amount';
+                        return context.intl.pleaseEnterValidPhoneNumber;
                       }
 
                       return null;
                     },
                   ),
                   const SizedBox(height: 16),
-                  MayaAmountText(
+                  MayaAmountTextField(
                     labelText: context.intl.amount,
                     controller: context
                         .select<SendMoneyViewModel, TextEditingController>(
@@ -93,7 +100,7 @@ class SendMoneyView extends StatelessWidget {
                         ),
                     validator: (final value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter amount';
+                        return context.intl.pleaseEnterAmount;
                       }
 
                       return null;

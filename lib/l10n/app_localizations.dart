@@ -176,6 +176,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Password must be at least 6 characters'**
   String get passwordMustBeAtLeast6Characters;
+
+  /// No description provided for @moneySentSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Money sent successfully'**
+  String get moneySentSuccessfully;
+
+  /// No description provided for @pleaseEnterRecipientPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter recipient phone'**
+  String get pleaseEnterRecipientPhone;
+
+  /// No description provided for @pleaseEnterValidPhoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid phone number'**
+  String get pleaseEnterValidPhoneNumber;
+
+  /// No description provided for @pleaseEnterAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter amount'**
+  String get pleaseEnterAmount;
+
+  /// No description provided for @moneySent.
+  ///
+  /// In en, this message translates to:
+  /// **'Money Sent'**
+  String get moneySent;
+
+  /// No description provided for @moneyReceived.
+  ///
+  /// In en, this message translates to:
+  /// **'Money Received'**
+  String get moneyReceived;
+
+  /// No description provided for @recipient.
+  ///
+  /// In en, this message translates to:
+  /// **'Recipient: {recipient}'**
+  String recipient(Object recipient);
+
+  /// No description provided for @noTransactionsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No transactions found'**
+  String get noTransactionsFound;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

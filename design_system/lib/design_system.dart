@@ -1,8 +1,10 @@
 export 'components/buttons/maya_button.dart';
 export 'components/scaffold/maya_scaffold.dart';
-export 'components/text_fields/maya_amount_text.dart';
-export 'components/text_fields/maya_email_field.dart';
-export 'components/text_fields/maya_mobile_number_text.dart';
-export 'components/text_fields/maya_password_field.dart';
+export 'components/text_fields/maya_amount_text_field.dart';
+export 'components/text_fields/maya_email_text_field.dart';
+export 'components/text_fields/maya_mobile_number_text_field.dart';
+export 'components/text_fields/maya_password_text_field.dart';
 export 'components/texts/maya_currency_text.dart';
+export 'components/texts/maya_date_text.dart';
+export 'components/texts/maya_deducted_amount_text.dart';
 export 'theme/app_colors.dart';

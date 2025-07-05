@@ -1,8 +1,9 @@
+import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/material.dart';
-import 'package:multi_masked_formatter/multi_masked_formatter.dart';
+import 'package:intl/intl.dart';
 
-class MayaMobileNumberText extends StatelessWidget {
-  const MayaMobileNumberText({
+class MayaAmountTextField extends StatelessWidget {
+  const MayaAmountTextField({
     required this.controller,
     required this.labelText,
     required this.validator,
@@ -27,9 +28,9 @@ class MayaMobileNumberText extends StatelessWidget {
     keyboardType: TextInputType.number,
     validator: validator,
     inputFormatters: [
-      MultiMaskedTextInputFormatter(
-        masks: ['xxx-xxxx-xxxx', 'xxx-xxx-xxxx'],
-        separator: '-',
+      CurrencyTextInputFormatter(
+        NumberFormat.currency(symbol: '₱', decimalDigits: 2),
+        enableNegative: false,
       ),
     ],
   );

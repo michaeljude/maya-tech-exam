@@ -1,9 +1,7 @@
-import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
-class MayaAmountText extends StatelessWidget {
-  const MayaAmountText({
+class MayaEmailTextField extends StatelessWidget {
+  const MayaEmailTextField({
     required this.controller,
     required this.labelText,
     required this.validator,
@@ -13,6 +11,7 @@ class MayaAmountText extends StatelessWidget {
   final TextEditingController controller;
   final String labelText;
   final String? Function(String?)? validator;
+
   @override
   Widget build(final BuildContext context) => TextFormField(
     controller: controller,
@@ -25,13 +24,7 @@ class MayaAmountText extends StatelessWidget {
       labelStyle: const TextStyle(color: Colors.black38),
       floatingLabelStyle: const TextStyle(color: Colors.black),
     ),
-    keyboardType: TextInputType.number,
+    keyboardType: TextInputType.emailAddress,
     validator: validator,
-    inputFormatters: [
-      CurrencyTextInputFormatter(
-        NumberFormat.currency(symbol: '₱', decimalDigits: 2),
-        enableNegative: false,
-      ),
-    ],
   );
 }

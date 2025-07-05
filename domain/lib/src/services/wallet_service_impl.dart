@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import '../../domain.dart';
-import '../entities/transaction_entity.dart';
 import '../entities/wallet_entity.dart';
 
 class WalletServiceImpl extends WalletService {
@@ -48,7 +47,7 @@ class WalletServiceImpl extends WalletService {
 
     final result = await _walletRepository.sendMoney(
       amount: amount,
-      recipient: recipient,
+      recipient: recipient.replaceAll('-', ''),
     );
 
     switch (result) {
@@ -87,6 +86,7 @@ class WalletServiceImpl extends WalletService {
     }
   }
 
+  @override
   Future<List<TransactionEntity>> getTransactions() async {
     final transactions = await _localStorageService.get('transactions');
 

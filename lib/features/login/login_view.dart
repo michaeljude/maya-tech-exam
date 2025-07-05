@@ -61,7 +61,7 @@ class LoginView extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 32),
-                  MayaEmailField(
+                  MayaEmailTextField(
                     controller: emailController,
                     labelText: context.intl.email,
                     validator: (final value) {
@@ -81,7 +81,7 @@ class LoginView extends StatelessWidget {
                     },
                   ),
                   const SizedBox(height: 16),
-                  MayaPasswordField(
+                  MayaPasswordTextField(
                     controller: passwordController,
                     labelText: context.intl.password,
                     validator: (final value) {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class MayaCurrencyText extends StatelessWidget {
-  const MayaCurrencyText({
+class MayaDeductedAmountText extends StatelessWidget {
+  const MayaDeductedAmountText({
     required this.value,
     this.isBalanceHidden = false,
     this.color,
@@ -20,13 +20,6 @@ class MayaCurrencyText extends StatelessWidget {
       decimalDigits: 2,
     ).format(value);
 
-    return Text(
-      isBalanceHidden ? '₱ * * * *' : balance,
-      style: TextStyle(
-        fontSize: 24,
-        fontWeight: FontWeight.w600,
-        color: color,
-      ),
-    );
+    return Text('-$balance', style: TextStyle(color: color));
   }
 }

@@ -32,6 +32,7 @@ class MayaScaffold extends StatelessWidget {
                   icon: const Icon(Icons.logout, color: Colors.black),
                 ),
       ],
+      scrolledUnderElevation: 0,
     ),
     body: body,
   );

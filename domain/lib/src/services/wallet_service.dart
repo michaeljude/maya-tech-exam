@@ -8,4 +8,6 @@ abstract class WalletService {
     required final double amount,
     required final String recipient,
   });
+
+  Future<List<TransactionEntity>> getTransactions();
 }

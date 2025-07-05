@@ -49,4 +49,30 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get passwordMustBeAtLeast6Characters => 'Password must be at least 6 characters';
+
+  @override
+  String get moneySentSuccessfully => 'Money sent successfully';
+
+  @override
+  String get pleaseEnterRecipientPhone => 'Please enter recipient phone';
+
+  @override
+  String get pleaseEnterValidPhoneNumber => 'Please enter a valid phone number';
+
+  @override
+  String get pleaseEnterAmount => 'Please enter amount';
+
+  @override
+  String get moneySent => 'Money Sent';
+
+  @override
+  String get moneyReceived => 'Money Received';
+
+  @override
+  String recipient(Object recipient) {
+    return 'Recipient: $recipient';
+  }
+
+  @override
+  String get noTransactionsFound => 'No transactions found';
 }
