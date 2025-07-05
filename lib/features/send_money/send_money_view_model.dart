@@ -20,7 +20,9 @@ class SendMoneyViewModel extends Cubit<SendMoneyViewState> {
   Future<void> sendMoney() async {
     safeEmit(state.copyWith(isLoading: true));
 
-    final amount = state.amountController.text.replaceAll('₱', '');
+    final amount = state.amountController.text
+        .replaceAll('₱', '')
+        .replaceAll(',', '');
     final recipient = state.recipientController.text;
 
     final result = await _walletService.sendMoney(

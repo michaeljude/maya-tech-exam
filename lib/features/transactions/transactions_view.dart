@@ -46,17 +46,12 @@ class TransactionsView extends StatelessWidget {
               return Card(
                 margin: const EdgeInsets.only(bottom: 12),
                 child: ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: index.isEven ? Colors.green : Colors.red,
-                    child: Icon(
-                      index.isEven ? Icons.arrow_upward : Icons.arrow_downward,
-                      color: Colors.white,
-                    ),
+                  leading: const CircleAvatar(
+                    backgroundColor: Colors.green,
+                    child: Icon(Icons.arrow_upward, color: Colors.white),
                   ),
                   title: Text(
-                    index.isEven
-                        ? context.intl.moneySent
-                        : context.intl.moneyReceived,
+                    context.intl.moneySent,
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   subtitle: Text(

@@ -23,4 +23,5 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   freezed: ^3.0.4
+  rxdart: ^0.28.0
 

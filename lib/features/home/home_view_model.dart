@@ -16,10 +16,10 @@ class HomeViewModel extends Cubit<HomeViewState> {
   final WalletService _walletService;
 
   Future<void> getWalletBalance() async {
-    final balance = await _walletService.getWallet();
-    safeEmit(
-      state.copyWith(balance: balance?.balance ?? 0, username: balance?.name),
-    );
+    _walletService.wallet.listen((final wallet) {
+      final balance = wallet?.balance;
+      safeEmit(state.copyWith(balance: balance ?? 0, username: wallet?.name));
+    });
   }
 
   void toggleBalanceVisibility() {

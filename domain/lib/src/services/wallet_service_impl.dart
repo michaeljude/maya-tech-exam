@@ -1,4 +1,7 @@
+import 'dart:async';
 import 'dart:convert';
+
+import 'package:rxdart/rxdart.dart';
 
 import '../../domain.dart';
 import '../entities/wallet_entity.dart';
@@ -8,38 +11,56 @@ class WalletServiceImpl extends WalletService {
     required final LocalStorageService localStorageService,
     required final WalletRepository walletRepository,
   }) : _localStorageService = localStorageService,
-       _walletRepository = walletRepository;
+       _walletRepository = walletRepository {
+    unawaited(_initWallet());
+  }
 
   final LocalStorageService _localStorageService;
   final WalletRepository _walletRepository;
 
-  @override
-  Future<WalletEntity?> getWallet() async {
+  final BehaviorSubject<WalletEntity?> _walletController =
+      BehaviorSubject.seeded(null);
+
+  Future<void> _initWallet() async {
     final wallet = await _localStorageService.get('wallet');
 
     if (wallet == null) {
-      return null;
+      return;
     }
 
     final walletEntity = jsonDecode(wallet);
 
     if (walletEntity is! Map<String, dynamic>) {
-      return null;
+      return;
     }
 
-    return WalletEntity.fromJson(walletEntity);
+    _walletController.add(WalletEntity.fromJson(walletEntity));
   }
+
+  @override
+  Stream<WalletEntity?> get wallet => _walletController.stream;
+
+  @override
+  WalletEntity? get walletvalue => _walletController.value;
 
   @override
   Future<Result<void>> sendMoney({
     required final double amount,
     required final String recipient,
   }) async {
-    final wallet = await getWallet();
+    final wallet = walletvalue;
 
     if (wallet == null) {
       return UnknownFailure(
         message: 'Wallet not found',
+        onRetry: () => sendMoney(amount: amount, recipient: recipient),
+        stackTrace: StackTrace.current,
+      );
+    }
+
+    if (amount > wallet.balance) {
+      return UnknownFailure(
+        message: 'Insufficient balance',
         onRetry: () => sendMoney(amount: amount, recipient: recipient),
         stackTrace: StackTrace.current,
       );
@@ -76,6 +97,10 @@ class WalletServiceImpl extends WalletService {
             ]),
           );
 
+          _walletController.add(
+            wallet.copyWith(balance: wallet.balance - amount),
+          );
+
           return Success(
             null,
             onRetry: () => sendMoney(amount: amount, recipient: recipient),
@@ -108,5 +133,10 @@ class WalletServiceImpl extends WalletService {
         )
         .whereType<TransactionEntity>()
         .toList();
+  }
+
+  @override
+  Future<void> dispose() async {
+    await _walletController.close();
   }
 }
