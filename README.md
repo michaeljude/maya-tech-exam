@@ -164,14 +164,6 @@ If you encounter any issues during setup, please check:
 2. All dependencies are properly installed
 3. Build runner generated files are up to date
 
-## Contributing
-
-1. Ensure you're using the correct Flutter version
-2. Run tests before submitting changes: `make run_tests`
-3. Follow the existing code structure and patterns
-4. Update tests for any new functionality
-
-
 ## Contact Support
 
 If you continue to experience issues after following the troubleshooting steps, please contact:
