@@ -47,6 +47,7 @@ void main() async {
                 walletRepository: MayaRepository(
                   mayaApiRepository: MayaApiRepository(dio),
                 ),
+                authenticationService: authenticationService,
               ),
         ),
       ],

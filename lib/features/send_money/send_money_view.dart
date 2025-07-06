@@ -45,6 +45,10 @@ class SendMoneyView extends StatelessWidget {
         builder: (final context) => MayaScaffold(
           onLogout: () async {
             await context.read<AuthenticationViewModel>().signOut();
+
+            if (context.mounted) {
+              context.read<WalletService>().clearWallet();
+            }
           },
           isSigningOut: context.select<AuthenticationViewModel, bool>(
             (final vm) => vm.state.isSigningOut,

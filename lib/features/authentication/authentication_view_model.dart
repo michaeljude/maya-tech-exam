@@ -60,7 +60,16 @@ class AuthenticationViewModel extends Cubit<AuthenticationViewState> {
   Future<void> signOut() async {
     safeEmit(state.copyWith(isSigningOut: true));
     final result = await _authenticationService.signOut();
-    safeEmit(state.copyWith(isSigningOut: false));
+
+    state.emailController.dispose();
+    state.passwordController.dispose();
+    safeEmit(
+      AuthenticationViewState(
+        formKey: GlobalKey<FormState>(),
+        emailController: TextEditingController(),
+        passwordController: TextEditingController(),
+      ),
+    );
 
     switch (result) {
       case Success():

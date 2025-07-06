@@ -10,21 +10,39 @@ class WalletServiceImpl extends WalletService {
   WalletServiceImpl({
     required final LocalStorageService localStorageService,
     required final WalletRepository walletRepository,
+    required final AuthenticationService authenticationService,
   }) : _localStorageService = localStorageService,
-       _walletRepository = walletRepository {
-    unawaited(_initWallet());
+       _walletRepository = walletRepository,
+       _authenticationService = authenticationService {
+    unawaited(initWallet());
   }
 
   final LocalStorageService _localStorageService;
   final WalletRepository _walletRepository;
+  final AuthenticationService _authenticationService;
 
   final BehaviorSubject<WalletEntity?> _walletController =
       BehaviorSubject.seeded(null);
 
-  Future<void> _initWallet() async {
-    final wallet = await _localStorageService.get('wallet');
+  @override
+  Future<void> initWallet() async {
+    final email = await _authenticationService.getEmail();
+    final username = await _authenticationService.getUsername();
+    final wallet = await _localStorageService.get('${email}_wallet');
 
     if (wallet == null) {
+      final walletEntity = WalletEntity(
+        name: username ?? 'there',
+        balance: 10000,
+      );
+
+      await _localStorageService.save(
+        '${email}_wallet',
+        value: jsonEncode(walletEntity.toJson()),
+      );
+
+      _walletController.add(WalletEntity.fromJson(walletEntity.toJson()));
+
       return;
     }
 
@@ -42,6 +60,11 @@ class WalletServiceImpl extends WalletService {
 
   @override
   WalletEntity? get walletvalue => _walletController.value;
+
+  @override
+  void clearWallet() {
+    _walletController.add(null);
+  }
 
   @override
   Future<Result<void>> sendMoney({
@@ -74,8 +97,9 @@ class WalletServiceImpl extends WalletService {
     switch (result) {
       case Success():
         {
+          final email = await _authenticationService.getEmail();
           await _localStorageService.save(
-            'wallet',
+            '${email}_wallet',
             value: jsonEncode(
               wallet.copyWith(balance: wallet.balance - amount).toJson(),
             ),
@@ -90,7 +114,7 @@ class WalletServiceImpl extends WalletService {
           final transactions = await getTransactions();
 
           await _localStorageService.save(
-            'transactions',
+            '${email}_transactions',
             value: jsonEncode([
               ...transactions.map((final transaction) => transaction.toJson()),
               transaction.toJson(),
@@ -113,7 +137,10 @@ class WalletServiceImpl extends WalletService {
 
   @override
   Future<List<TransactionEntity>> getTransactions() async {
-    final transactions = await _localStorageService.get('transactions');
+    final email = await _authenticationService.getEmail();
+    final transactions = await _localStorageService.get(
+      '${email}_transactions',
+    );
 
     if (transactions == null) {
       return [];

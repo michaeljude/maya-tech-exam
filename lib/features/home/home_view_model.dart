@@ -10,7 +10,12 @@ class HomeViewModel extends Cubit<HomeViewState> {
   HomeViewModel({required final WalletService walletService})
     : _walletService = walletService,
       super(const HomeViewState()) {
-    unawaited(getWalletBalance());
+    unawaited(init());
+  }
+
+  Future<void> init() async {
+    await _walletService.initWallet();
+    await getWalletBalance();
   }
 
   final WalletService _walletService;
