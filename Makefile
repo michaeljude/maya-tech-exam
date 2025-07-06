@@ -24,6 +24,9 @@ models_maya:
 	cd data/maya && dart run build_runner build --delete-conflicting-outputs
 
 run_tests:
+	flutter test test/features/home/home_view_model_test.dart
+	flutter test test/features/send_money/send_money_view_model_test.dart
+	flutter test test/features/transactions/transactions_view_model_test.dart
 	cd domain/test/services && flutter test wallet_service_test.dart && flutter test authentication_service_test.dart
 	cd data/maya/test && flutter test maya_repository_test.dart
 

@@ -5,7 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../domain.dart';
-import '../entities/wallet_entity.dart';
 
 class WalletServiceImpl extends WalletService {
   WalletServiceImpl({

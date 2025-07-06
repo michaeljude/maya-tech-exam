@@ -3,7 +3,6 @@
 import 'dart:convert';
 
 import 'package:domain/domain.dart';
-import 'package:domain/src/entities/wallet_entity.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';

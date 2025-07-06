@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../app/extension/context_extension.dart';
+import '../../router/app_router.gr.dart';
 import '../authentication/authentication_view_model.dart';
 import 'send_money_view_model.dart';
 import 'send_money_view_state.dart';
@@ -44,7 +45,24 @@ class SendMoneyView extends StatelessWidget {
       child: Builder(
         builder: (final context) => MayaScaffold(
           onLogout: () async {
-            await context.read<AuthenticationViewModel>().signOut();
+            await context.read<AuthenticationViewModel>().signOut(
+              onSuccess: () async {
+                if (context.mounted) {
+                  context.read<WalletService>().clearWallet();
+                }
+
+                await context.router.replaceAll([const HomeRoute()]);
+              },
+              onFailure: () async {
+                await showModalBottomSheet<void>(
+                  context: context,
+                  builder: (final context) => const _MayaBottomSheet(
+                    message: 'Sign out failed',
+                    isSuccess: false,
+                  ),
+                );
+              },
+            );
 
             if (context.mounted) {
               context.read<WalletService>().clearWallet();

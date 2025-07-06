@@ -41,14 +41,13 @@ void main() async {
         Provider<AuthenticationService>(create: (_) => authenticationService),
         Provider<LocalStorageService>(create: (_) => localStorageService),
         Provider<WalletService>(
-          create: (_) =>
-              WalletServiceImpl(
-                localStorageService: localStorageService,
-                walletRepository: MayaRepository(
-                  mayaApiRepository: MayaApiRepository(dio),
-                ),
-                authenticationService: authenticationService,
-              ),
+          create: (_) => WalletServiceImpl(
+            localStorageService: localStorageService,
+            walletRepository: MayaRepository(
+              mayaApiRepository: MayaApiRepository(dio),
+            ),
+            authenticationService: authenticationService,
+          ),
         ),
       ],
       child: MultiBlocProvider(
@@ -56,7 +55,6 @@ void main() async {
           BlocProvider<AuthenticationViewModel>(
             create: (_) => AuthenticationViewModel(
               authenticationService: authenticationService,
-              appRouter: appRouter,
             ),
           ),
         ],

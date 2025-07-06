@@ -1,5 +1,6 @@
 export 'src/entities/authentication_entity.dart';
 export 'src/entities/transaction_entity.dart';
+export 'src/entities/wallet_entity.dart';
 export 'src/repositories/authentication_repository.dart';
 export 'src/repositories/local_storage_repository.dart';
 export 'src/repositories/wallet_repository.dart';

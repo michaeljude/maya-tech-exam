@@ -16,10 +16,24 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(final BuildContext context) => MayaScaffold(
     onLogout: () async {
-      await context.read<AuthenticationViewModel>().signOut();
-      if (context.mounted) {
-        context.read<WalletService>().clearWallet();
-      }
+      await context.read<AuthenticationViewModel>().signOut(
+        onSuccess: () async {
+          if (context.mounted) {
+            context.read<WalletService>().clearWallet();
+          }
+
+          await context.router.replaceAll([const HomeRoute()]);
+        },
+        onFailure: () async {
+          await showModalBottomSheet<void>(
+            context: context,
+            builder: (final context) => const _MayaBottomSheet(
+              message: 'Sign out failed',
+              isSuccess: false,
+            ),
+          );
+        },
+      );
     },
     isSigningOut: context.select<AuthenticationViewModel, bool>(
       (final vm) => vm.state.isSigningOut,
@@ -95,6 +109,36 @@ class HomeView extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    ),
+  );
+}
+
+class _MayaBottomSheet extends StatelessWidget {
+  const _MayaBottomSheet({required this.message, required this.isSuccess});
+
+  final String message;
+  final bool isSuccess;
+
+  @override
+  Widget build(final BuildContext context) => Scaffold(
+    body: Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          if (isSuccess)
+            const Icon(Icons.check_circle, color: Colors.green, size: 48)
+          else
+            const Icon(Icons.error_outline, color: Colors.red, size: 48),
+          const SizedBox(height: 16),
+          Text(
+            message,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 16, color: Colors.black87),
+          ),
+        ],
       ),
     ),
   );

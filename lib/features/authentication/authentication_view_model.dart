@@ -4,26 +4,22 @@ import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../app/extension/cubit_extension.dart';
-import '../../router/app_router.dart';
-import '../../router/app_router.gr.dart';
 import 'authentication_view_state.dart';
 
 class AuthenticationViewModel extends Cubit<AuthenticationViewState> {
   AuthenticationViewModel({
     required final AuthenticationService authenticationService,
-    required final AppRouter appRouter,
+    final GlobalKey<FormState>? formKey,
   }) : _authenticationService = authenticationService,
-       _appRouter = appRouter,
        super(
          AuthenticationViewState(
-           formKey: GlobalKey<FormState>(),
+           formKey: formKey ?? GlobalKey<FormState>(),
            emailController: TextEditingController(),
            passwordController: TextEditingController(),
          ),
        );
 
   final AuthenticationService _authenticationService;
-  final AppRouter _appRouter;
 
   Future<void> signIn() async {
     final currentState = state.formKey.currentState;
@@ -57,7 +53,10 @@ class AuthenticationViewModel extends Cubit<AuthenticationViewState> {
     }
   }
 
-  Future<void> signOut() async {
+  Future<void> signOut({
+    required final VoidCallback onSuccess,
+    required final VoidCallback onFailure,
+  }) async {
     safeEmit(state.copyWith(isSigningOut: true));
     final result = await _authenticationService.signOut();
 
@@ -73,8 +72,9 @@ class AuthenticationViewModel extends Cubit<AuthenticationViewState> {
 
     switch (result) {
       case Success():
-        unawaited(_appRouter.replaceAll([const HomeRoute()]));
+        onSuccess();
       case Failure():
+        onFailure();
     }
   }
 
