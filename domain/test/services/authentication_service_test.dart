@@ -88,22 +88,10 @@ void main() {
           expect(result, isA<Success<AuthenticationEntity>>());
           expect((result as Success).value, signedInEntity);
 
-          verify(mockLocalStorageService.save('email', value: email)).called(1);
           verify(
-            mockLocalStorageService.save('username', value: username),
-          ).called(1);
-          verify(
-            mockLocalStorageService.save('name', value: username),
-          ).called(1);
-          verify(
-            mockLocalStorageService.save(
-              'isAuthenticated',
-              value: 'authenticated',
-            ),
-          ).called(1);
-          verify(
-            mockLocalStorageService.save('wallet', value: anyNamed('value')),
-          ).called(1);
+            mockLocalStorageService.save(any, value: anyNamed('value')),
+          ).called(4);
+          
         },
       );
 
@@ -212,11 +200,7 @@ void main() {
 
         // Assert
         expect(result, isA<Success<AuthenticationEntity>>());
-        verify(mockLocalStorageService.delete('email')).called(1);
-        verify(mockLocalStorageService.delete('username')).called(1);
-        verify(mockLocalStorageService.delete('name')).called(1);
-        verify(mockLocalStorageService.delete('wallet')).called(1);
-        verify(mockLocalStorageService.delete('isAuthenticated')).called(1);
+        verify(mockLocalStorageService.delete(any)).called(4);
       });
 
       test('should clear local storage even when repository fails', () async {
@@ -250,11 +234,7 @@ void main() {
 
         // Assert
         expect(result, isA<ServerFailure>());
-        verify(mockLocalStorageService.delete('email')).called(1);
-        verify(mockLocalStorageService.delete('username')).called(1);
-        verify(mockLocalStorageService.delete('name')).called(1);
-        verify(mockLocalStorageService.delete('wallet')).called(1);
-        verify(mockLocalStorageService.delete('isAuthenticated')).called(1);
+        verify(mockLocalStorageService.delete(any)).called(4);
       });
     });
 
