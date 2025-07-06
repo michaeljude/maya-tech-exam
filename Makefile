@@ -23,6 +23,9 @@ models_js:
 models_maya:
 	cd data/maya && dart run build_runner build --delete-conflicting-outputs
 
+test_domain:
+	cd domain/test/services && flutter test wallet_service_test.dart && flutter test authentication_service_test.dart
+
 setup_all:
 	flutter pub get
 	dart run build_runner build --delete-conflicting-outputs

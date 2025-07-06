@@ -26,3 +26,6 @@ dev_dependencies:
   mockito: ^5.4.6
   rxdart: ^0.28.0
 
+flutter:
+  uses-material-design: true
+
