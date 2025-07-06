@@ -1,8 +1,6 @@
 import 'dart:async';
-import 'dart:convert';
 
 import '../../domain.dart';
-import '../entities/wallet_entity.dart';
 
 class AuthenticationServiceImpl implements AuthenticationService {
   const AuthenticationServiceImpl({

@@ -171,6 +171,7 @@ dart_code_metrics:
     - avoid-late-keyword:
         exclude:
           - '**/test/**'
+          - '**/domain/test/**'
           - '**/old/**'
     - avoid-existing-instances-in-bloc-provider:
         exclude:

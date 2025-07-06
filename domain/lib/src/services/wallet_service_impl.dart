@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../domain.dart';
@@ -46,13 +47,17 @@ class WalletServiceImpl extends WalletService {
       return;
     }
 
-    final walletEntity = jsonDecode(wallet);
+    try {
+      final walletEntity = jsonDecode(wallet);
 
-    if (walletEntity is! Map<String, dynamic>) {
-      return;
+      if (walletEntity is! Map<String, dynamic>) {
+        return;
+      }
+
+      _walletController.add(WalletEntity.fromJson(walletEntity));
+    } catch (error) {
+      debugPrint(error.toString());
     }
-
-    _walletController.add(WalletEntity.fromJson(walletEntity));
   }
 
   @override
@@ -146,20 +151,26 @@ class WalletServiceImpl extends WalletService {
       return [];
     }
 
-    final transactionsEntity = jsonDecode(transactions);
+    try {
+      final transactionsEntity = jsonDecode(transactions);
 
-    if (transactionsEntity is! List) {
-      return [];
+      if (transactionsEntity is! List) {
+        return [];
+      }
+
+      return transactionsEntity
+          .map(
+            (final transaction) => transaction is Map<String, dynamic>
+                ? TransactionEntity.fromJson(transaction)
+                : null,
+          )
+          .whereType<TransactionEntity>()
+          .toList();
+    } catch (error) {
+      debugPrint(error.toString());
     }
 
-    return transactionsEntity
-        .map(
-          (final transaction) => transaction is Map<String, dynamic>
-              ? TransactionEntity.fromJson(transaction)
-              : null,
-        )
-        .whereType<TransactionEntity>()
-        .toList();
+    return [];
   }
 
   @override
